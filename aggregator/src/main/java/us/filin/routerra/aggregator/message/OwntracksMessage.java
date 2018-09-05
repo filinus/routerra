@@ -1,4 +1,4 @@
-package us.filin.routerra.aggregator;
+package us.filin.routerra.aggregator.message;
 
 import com.fasterxml.jackson.annotation.*;
 import lombok.*;
@@ -10,15 +10,17 @@ import lombok.*;
         use = JsonTypeInfo.Id.NAME,
         property = "_type",
         visible = true,
-        defaultImpl = OwntracksMessage.class
+        defaultImpl = OwntracksAnother.class
 )
 @JsonSubTypes({
         @JsonSubTypes.Type(value = OwntracksLocation.class, name = "location"),
-        @JsonSubTypes.Type(value = OwntracksLocation.class, name = "transition"),
-        @JsonSubTypes.Type(value = OwntracksLocation.class, name = "lwt")
+        @JsonSubTypes.Type(value = OwntracksTransition.class, name = "transition"),
+        @JsonSubTypes.Type(value = OwntracksLWT.class, name = "lwt")
 })
 @Getter
-public class OwntracksMessage {
+@Setter
+@ToString
+abstract public class OwntracksMessage {
     @JsonTypeId
     @JsonProperty("_type")
     protected String type;

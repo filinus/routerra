@@ -1,5 +1,7 @@
 package us.filin.routerra.aggregator;
 
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,7 +13,12 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ImportResource;
 import org.springframework.integration.annotation.ServiceActivator;
 import org.springframework.integration.mqtt.core.MqttPahoClientFactory;
+import org.springframework.messaging.Message;
 import org.springframework.messaging.MessageHandler;
+import org.springframework.messaging.MessagingException;
+import us.filin.routerra.aggregator.message.OwntracksMessage;
+
+import java.io.IOException;
 
 @SpringBootApplication
 @ImportResource("classpath:beans.xml")
@@ -35,9 +42,30 @@ public class AggregatorApplication {
 			.run(args);
 	}
 
+
 	@Bean
 	@ServiceActivator(inputChannel = "mqttInputChannel")
 	public MessageHandler handler() {
-		return message -> LOG.info("payload: \n\t{}\n\t{}\n\t{}", message, message.getPayload(), message.getHeaders());
+		return new MessageHandler() {
+
+			@Override
+			public void handleMessage(Message<?> message) throws MessagingException {
+				Object payload = message.getPayload();
+
+				LOG.info("payload: \n\t{}\n\t{}\n\t{}\n\t{}", message, payload.getClass(), payload, message.getHeaders());
+
+				ObjectMapper objectMapper = new ObjectMapper();
+				objectMapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
+
+
+				try {
+					OwntracksMessage owntracksMessage = objectMapper.readValue(""+payload, OwntracksMessage.class);
+					LOG.info("parsed payload: \n\t{}", owntracksMessage);
+				} catch (IOException e) {
+					throw new MessagingException(e.getMessage(), e);
+				}
+			}
+
+		};
 	}
 }
