@@ -49,6 +49,27 @@ public class SchemaTests {
     }
 
     @Test
+    public void transitionToJson() throws IOException {
+        OwntracksLocation owntracksLocation = new OwntracksLocation();
+        owntracksLocation.setType("transition");
+        owntracksLocation.setTimestamp(1535903074L);
+        owntracksLocation.setCourse(0.0);
+        owntracksLocation.setLatitude(0.0);
+        owntracksLocation.setLongitude(0.0);
+
+        String json = objectMapper.writeValueAsString(owntracksLocation);
+        assertNotNull(json);
+        assertEquals("{", json.substring(0,1));
+        Map<String, String> set = objectMapper.readValue(json, new TypeReference<Map<String, String>>() {});
+        assertNotNull(set);
+        assertEquals("0.0", set.get("cog"));
+        assertEquals("0.0", set.get("lat"));
+        assertEquals("0.0", set.get("lon"));
+        assertEquals("1535903074", set.get("tst"));
+        assertEquals("transition", set.get("_type"));
+    }
+
+    @Test
     public void jsonToLocation() throws IOException {
         String jsonInString = "{\"_type\":\"location\",\"tid\":\"LG\",\"acc\":16,\"batt\":0,\"lat\":37.5042343,\"lon\":-122.2615189,\"tst\":1535903074}";
 
