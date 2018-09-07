@@ -21,3 +21,8 @@
   font-size: large;
 }
 
+.VDivider {
+  border-right: 0.1em dotted #777777;
+  padding: 0.5em;
+  margin-right: 2em;
+}

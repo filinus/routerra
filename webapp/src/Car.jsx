@@ -15,9 +15,9 @@ export default class Car extends Marker {
     constructor(props) {
         super(props);
         this.state = {
-            lattitude: props.lattitude,
+            latitude: props.latitude,
             longitude: props.longitude,
-            rotation: props.rotation || 0, //North
+            course: props.course || 0, //North
             color: props.color || 0 //black
         };
     }
@@ -28,7 +28,7 @@ export default class Car extends Marker {
                 <ReactSVG src={carTopIcon} alt="&#x1F698" svgStyle={{
                     ...markerStyle,
                     fill: this.props.color,
-                    transform: "rotate("+this.props.rotation+"deg)"
+                    transform: "rotate("+(this.props.course||0)+"deg)"
                 }} />
             </Marker>
         )

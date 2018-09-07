@@ -40,7 +40,7 @@ public class OTMessageHandler implements MessageHandler {
                 Location location = Location
                         .builder()
                         .course(owntracksLocation.getCourse())
-                        .lattitude(owntracksLocation.getLatitude())
+                        .latitude(owntracksLocation.getLatitude())
                         .longitude(owntracksLocation.getLongitude())
                         .build();
 

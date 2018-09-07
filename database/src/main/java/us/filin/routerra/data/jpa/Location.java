@@ -22,7 +22,7 @@ import javax.persistence.Table;
 public class Location extends Identified {
 
     @Column(nullable = false)
-    private double lattitude;
+    private double latitude;
 
     @Column(nullable = false)
     private double longitude;
