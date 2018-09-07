@@ -1,69 +1,9 @@
 import React, {Component} from 'react';
 import ReactMapGL from 'react-map-gl';
 import Car from './Car.jsx';
-//import feathers from "@feathersjs/client";
-//import rest from "@feathersjs/rest-client";
-//const client = require('./js/client.js');
+import axios from 'axios';
+
 const TOKEN = "pk.eyJ1IjoiZmlsaW51cyIsImEiOiJjamxpb2RsY2swM2Q1M3FvYWN6cnF3M3U0In0.t-8oNaXKO_tIPO1_K9ZqXw"; //https://www.mapbox.com/help/how-access-tokens-work/
-
-
-const kindaResponse =
-    {
-        "_embedded" : {
-            "locations" : [ {
-                "latitude" : 1.0,
-                "longitude" : 1.0,
-                "course" : 1.0,
-                "_links" : {
-                    "self" : {
-                        "href" : "http://localhost:8080/locations/89619fd4-56e9-43ee-9cc8-15937e9a841b"
-                    },
-                    "location" : {
-                        "href" : "http://localhost:8080/locations/89619fd4-56e9-43ee-9cc8-15937e9a841b"
-                    }
-                }
-            }, {
-                "latitude" : 37.50425779346783,
-                "longitude" : -122.26155928105942,
-                "course" : null,
-                "_links" : {
-                    "self" : {
-                        "href" : "http://localhost:8080/locations/656e8b1e-9db6-4e3e-b043-3024600f8b4e"
-                    },
-                    "location" : {
-                        "href" : "http://localhost:8080/locations/656e8b1e-9db6-4e3e-b043-3024600f8b4e"
-                    }
-                }
-            }, {
-                "latitude" : 37.5045026,
-                "longitude" : -122.2606919,
-                "course" : null,
-                "_links" : {
-                    "self" : {
-                        "href" : "http://localhost:8080/locations/96515d6a-7b18-4a6e-b8ae-330c137a7131"
-                    },
-                    "location" : {
-                        "href" : "http://localhost:8080/locations/96515d6a-7b18-4a6e-b8ae-330c137a7131"
-                    }
-                }
-            } ]
-        },
-        "_links" : {
-            "self" : {
-                "href" : "http://localhost:8080/locations{?page,size,sort}",
-                "templated" : true
-            },
-            "profile" : {
-                "href" : "http://localhost:8080/profile/locations"
-            }
-        },
-        "page" : {
-            "size" : 20,
-            "totalElements" : 3,
-            "totalPages" : 1,
-            "number" : 0
-        }
-    };
 
 const mapContainerStyle = {
     width: "100%",
@@ -83,15 +23,7 @@ class Map extends Component {
             name: "Routerra",
 
         },
-        //carRotation: 45,
-        cars: kindaResponse
-
-
-  //          [
-    //        {latitude:37.80,longitude:-122.43,rotation:0,color:"blue"},
-    //        {latitude:37.90,longitude:-122.50,rotation:30,color:"orange"},
-    //        {latitude:37.60,longitude:-122.0,rotation:-190,color:"green"}
-    //    ]
+        cars: []
     };
 
     componentDidMount() {
@@ -102,10 +34,20 @@ class Map extends Component {
         window.addEventListener('resize', this._resize);
         this._resize();
 
-        //client({method: 'GET', path: 'http://localhost:8080/profile'}).done(response => {
-        //    console.log(response.entity._embedded);
-        //    //this.setState({employees: response.entity._embedded.employees});
-        //});
+        const config = {headers: {'Access-Control-Allow-Origin': '*'}};
+        axios.get("http://localhost:8080/locations", config)
+            .then(res => {
+                console.log("received locations");
+                console.log(res);
+                const data = res.data;
+                if (res.status===200 && data && data._embedded && data._embedded.locations) {
+                    console.info("cars found");
+                    console.info(data._embedded.locations)
+                    this.setState({cars: data._embedded.locations});
+                } else {
+                    console.error("bad response");
+                }
+            })
 
     }
 
@@ -133,7 +75,7 @@ class Map extends Component {
                     mapboxApiAccessToken={TOKEN}
                     mapStyle='mapbox://styles/mapbox/basic-v9'
                 >
-                    {this.state.cars._embedded.locations.map((car, index) =>
+                    {this.state.cars.map((car, index) =>
                         <Car {...car} key={index}/>
                     )}
                 </ReactMapGL>

@@ -23,6 +23,8 @@ export default class Car extends Marker {
     }
 
     render () {
+        console.log("rendering car");
+        console.log(this.props);
         return(
             <Marker {...this.props} offsetLeft={-markerWidth/2} offsetTop={-markerHeight/2} >
                 <ReactSVG src={carTopIcon} alt="&#x1F698" svgStyle={{
