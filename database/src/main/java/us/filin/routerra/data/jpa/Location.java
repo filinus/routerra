@@ -8,8 +8,6 @@ import lombok.Setter;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Builder
@@ -20,7 +18,6 @@ import javax.persistence.Table;
 @NoArgsConstructor
 @Table(name = "locations")
 public class Location extends Identified {
-    private static final long serialVersionUID = 42L;
 
     @Column(nullable = false)
     private double lattitude;
@@ -28,6 +25,6 @@ public class Location extends Identified {
     @Column(nullable = false)
     private double logitude;
 
-    @Column(nullable = false)
+    @Column(nullable = true)
     private Double cource;
 }

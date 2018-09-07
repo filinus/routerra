@@ -1,6 +1,8 @@
 package us.filin.routerra.data.service;
 
+import lombok.Getter;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
@@ -9,22 +11,14 @@ import us.filin.routerra.data.jpa.Fleet;
 
 import java.util.List;
 
-@Component("fleetService")
+@Component
+@Qualifier("repositories")
 @Transactional
-public class FleetService {
-	private final FleetRepository fleetRepository;
+@Getter
+public class Repositories {
+	@Autowired
+	private LocationRepository locationRepository;
 
 	@Autowired
-	public FleetService(FleetRepository fleetRepository) {
-		this.fleetRepository = fleetRepository;
-	}
-
-	public List<Fleet> findAll() {
-		return fleetRepository.findAll();
-	}
-
-	public Page<Fleet> findAll(Pageable pageable) {
-		return fleetRepository.findAll(pageable);
-	}
-
+	private FleetRepository fleetRepository;
 }

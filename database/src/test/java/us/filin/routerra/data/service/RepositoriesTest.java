@@ -19,17 +19,14 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import us.filin.routerra.data.PlaceholderTestApplication;
 import us.filin.routerra.data.jpa.Fleet;
 
 import java.util.List;
 
-import static org.hamcrest.Matchers.hasSize;
-import static org.hamcrest.Matchers.is;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertThat;
+import static org.junit.Assert.*;
 
 /**
  *
@@ -37,14 +34,19 @@ import static org.junit.Assert.assertThat;
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest(classes = PlaceholderTestApplication.class)
-public class FleetTest {
+public class RepositoriesTest {
 	@Autowired
-	private FleetRepository fleetRepository;
+	private Repositories repositories;
 
 	@Test
 	public void executesQueryMethodsCorrectly() {
+		FleetRepository fleetRepository = repositories.getFleetRepository();
 		List<Fleet> fleetList = fleetRepository.findAll();
 		assertNotNull(fleetList);
-		assertFalse(fleetList.isEmpty());
+		Fleet fleet = new Fleet();
+		fleet.setFleetname("Fleet name");
+		fleetRepository.saveAndFlush(fleet);
+		List<Fleet> fleetList2 = fleetRepository.findAll();
+
 	}
 }
