@@ -6,15 +6,15 @@ import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.Column;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
-import java.util.UUID;
 
 @MappedSuperclass
 @Getter
 @NoArgsConstructor
-public abstract class Identified extends Timestamped {
-    public final static Class clazz = org.hibernate.id.UUIDGenerator.class;
+public abstract class Identified  { //extends Timestamped
+    private final static Class clazz = org.hibernate.id.UUIDGenerator.class;
 
     @Id
     @GeneratedValue(generator = "gen1")

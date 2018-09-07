@@ -5,6 +5,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -16,15 +17,16 @@ import javax.persistence.Table;
 @Getter
 @Setter
 @NoArgsConstructor
-@Table(name = "locations")
+@Table(name = "location")
+@ToString
 public class Location extends Identified {
 
     @Column(nullable = false)
     private double lattitude;
 
     @Column(nullable = false)
-    private double logitude;
+    private double longitude;
 
     @Column(nullable = true)
-    private Double cource;
+    private Double course;
 }

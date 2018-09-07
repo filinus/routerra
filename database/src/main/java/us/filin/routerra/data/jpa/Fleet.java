@@ -18,11 +18,10 @@ import javax.persistence.Table;
 @Table(
     name = "fleet",
     indexes = {
-            @Index(name = "fleetname_index", columnList = "fleetname", unique = true)
+            @Index(name = "fleetname", columnList = "fleetname", unique = true)
     }
 )
 public class Fleet extends Identified {
-    public final static String clazz = Fleet.class.getCanonicalName();
 
     @NaturalId
     private String fleetname;

@@ -22,9 +22,11 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import us.filin.routerra.data.PlaceholderTestApplication;
+import us.filin.routerra.data.jpa.CMLogin;
 import us.filin.routerra.data.jpa.Fleet;
 
 import java.util.List;
+import java.util.Optional;
 
 import static org.junit.Assert.*;
 
@@ -39,14 +41,26 @@ public class RepositoriesTest {
 	private Repositories repositories;
 
 	@Test
-	public void executesQueryMethodsCorrectly() {
-		FleetRepository fleetRepository = repositories.getFleetRepository();
+	public void saveAndFindFleet() {
+		FleetRepository fleetRepository = repositories.getFleet();
 		List<Fleet> fleetList = fleetRepository.findAll();
 		assertNotNull(fleetList);
 		Fleet fleet = new Fleet();
 		fleet.setFleetname("Fleet name");
-		fleetRepository.saveAndFlush(fleet);
-		List<Fleet> fleetList2 = fleetRepository.findAll();
+		Fleet saved = fleetRepository.saveAndFlush(fleet);
+		Optional<Fleet> findSaved = fleetRepository.findById(saved.getId());
+		assertTrue(findSaved.isPresent());
+	}
+
+	@Test
+	public void cmLoginBelongsAFleet() {
+		CMLoginRepository fleetRepository = repositories.getCmLogin();
+		List<CMLogin> list = fleetRepository.findAll();
+		assertNotNull(list);
+		assertFalse(list.isEmpty());
+		CMLogin cmLogin = list.iterator().next();
+		Fleet fleet = cmLogin.getFleet();
+		assertNotNull(fleet);
 
 	}
 }

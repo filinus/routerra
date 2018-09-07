@@ -17,6 +17,7 @@
     <modules>
         <module>../aggregator</module>
         <module>../database</module>
+        <module>../rest</module>
     </modules>
 
 
