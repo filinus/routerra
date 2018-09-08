@@ -12,7 +12,7 @@ import axios from 'axios';
 //const cfg = require('dotenv').config();
 //console.log(cfg);
 
-const kindaRespone = {_embedded: {fleets: []}};
+const kindaRespone = {content: []};
 
 class App extends Component {
   constructor(props) {
@@ -28,7 +28,7 @@ class App extends Component {
           .then(res => {
               console.log("received fleet list");
               const data = res.data;
-              if (res.status===200 && data && data._embedded && data._embedded.fleets) {
+              if (res.status===200 && data && data.content) {
                   this.setState({response: data});
               }
           })
@@ -43,7 +43,7 @@ class App extends Component {
                       Routerra Demo App
                   </Typography>
                   <Select autoWidth={true} displayEmpty={true}>
-                      {this.state.response._embedded.fleets.map((fleet, index) =>
+                      {this.state.response.content.map((fleet, index) =>
                           <MenuItem key={"fleet"+index}>{fleet.fleetname}</MenuItem>
                       )}
                   </Select>

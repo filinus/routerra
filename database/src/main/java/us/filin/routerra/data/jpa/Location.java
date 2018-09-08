@@ -9,6 +9,9 @@ import lombok.ToString;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 @Builder
@@ -20,6 +23,9 @@ import javax.persistence.Table;
 @Table(name = "location")
 @ToString
 public class Location extends Identified {
+    //@OneToOne(targetEntity = Location.class)
+    //@JoinColumn(name = "device_id", nullable = true)
+    //private Device device;
 
     @Column(nullable = false)
     private double latitude;

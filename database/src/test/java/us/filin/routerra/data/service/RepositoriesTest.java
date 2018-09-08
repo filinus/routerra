@@ -54,13 +54,24 @@ public class RepositoriesTest {
 
 	@Test
 	public void cmLoginBelongsAFleet() {
-		CMLoginRepository fleetRepository = repositories.getCmLogin();
-		List<CMLogin> list = fleetRepository.findAll();
+		CMLoginRepository cmLoginRepository = repositories.getCmLogin();
+		List<CMLogin> list = cmLoginRepository.findAll();
 		assertNotNull(list);
 		assertFalse(list.isEmpty());
 		CMLogin cmLogin = list.iterator().next();
 		Fleet fleet = cmLogin.getFleet();
 		assertNotNull(fleet);
-
 	}
+
+
+	@Test
+	public void findFleetByCMLogin() {
+		CMLoginRepository cmLoginRepository = repositories.getCmLogin();
+		CMLogin cmLogin = cmLoginRepository.findByLogin("cmlogin1");
+		assertNotNull(cmLogin);
+		Fleet fleet = repositories.lookupFleetByCMLogin(cmLogin.getLogin());
+		assertNotNull(fleet);
+	}
+
+
 }

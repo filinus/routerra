@@ -12,19 +12,22 @@ const mapContainerStyle = {
 };
 
 class Map extends Component {
+    constructor(props) {
+        super(props);
 
-    state = {
-        viewport: {
-            width: this.props.width || window.innerWidth,
-            height: this.props.height || window.innerHeight,
-            latitude: 37.7577,
-            longitude: -122.4376,
-            zoom: 9,
-            name: "Routerra",
+        this.state = {
+            viewport: {
+                width: this.props.width || window.innerWidth,
+                height: this.props.height || window.innerHeight,
+                latitude: 37.7577,
+                longitude: -122.4376,
+                zoom: 9,
+                name: "Routerra",
 
-        },
-        cars: []
-    };
+            },
+            cars: []
+        };
+    }
 
     componentDidMount() {
         //var intervalId = setInterval(this.timer.bind(this), 2000);
@@ -35,15 +38,13 @@ class Map extends Component {
         this._resize();
 
         const config = {headers: {'Access-Control-Allow-Origin': '*'}};
-        axios.get("http://localhost:8080/locations", config)
+        axios.get("http://localhost:8080/devices", config)
             .then(res => {
-                console.log("received locations");
-                console.log(res);
+                console.log("received locations response:", res);
                 const data = res.data;
-                if (res.status===200 && data && data._embedded && data._embedded.locations) {
-                    console.info("cars found");
-                    console.info(data._embedded.locations)
-                    this.setState({cars: data._embedded.locations});
+                if (res.status===200 && data && data.content) {
+                    console.info("cars found:", data.content);
+                    this.setState({cars: data.content});
                 } else {
                     console.error("bad response");
                 }
@@ -76,7 +77,7 @@ class Map extends Component {
                     mapStyle='mapbox://styles/mapbox/basic-v9'
                 >
                     {this.state.cars.map((car, index) =>
-                        <Car {...car} key={index}/>
+                        <Car {...car.lastLocation} color={car.color} key={index}/>
                     )}
                 </ReactMapGL>
             </div>

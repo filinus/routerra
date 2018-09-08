@@ -9,12 +9,14 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
+import java.io.Serializable;
 
 @MappedSuperclass
 @Getter
 @NoArgsConstructor
-public abstract class Identified  { //extends Timestamped
-    private final static Class clazz = org.hibernate.id.UUIDGenerator.class;
+public abstract class Identified implements Serializable { //extends Timestamped
+    private static final long serialVersionUID = 1L;
+    //private final static Class clazz = org.hibernate.id.UUIDGenerator.class;
 
     @Id
     @GeneratedValue(generator = "gen1")

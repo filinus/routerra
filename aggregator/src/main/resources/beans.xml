@@ -23,7 +23,7 @@
                 <property name="automaticReconnect" value="true"/>
                 <property name="serverURIs">
                     <array value-type="java.lang.String">
-                        <value>tcp://abcdefgh.cloudmqtt.com:17355</value>
+                        <value>${mqtt.url}</value>
                     </array>
                 </property>
             </bean>
