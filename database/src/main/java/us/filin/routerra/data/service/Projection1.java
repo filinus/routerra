@@ -7,6 +7,7 @@ import us.filin.routerra.data.jpa.Location;
 
 @Projection(name = "projection1", types = {Device.class, Location.class})
 public interface Projection1 {
+    String getId();
     String getDevname();
     Fleet getFleet();
     Location getLastLocation();

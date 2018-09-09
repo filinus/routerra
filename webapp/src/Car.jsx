@@ -2,12 +2,13 @@ import {Marker} from 'react-map-gl';
 import carTopIcon from "./images/car_top.svg";
 import React from "react";
 import ReactSVG from 'react-svg';
+import Tooltip from '@material-ui/core/Tooltip'
 
 const markerWidth = 20;
 const markerHeight = 50;
 const markerStyle = {
-    width: markerWidth+"px",
-    height: markerHeight+"px",
+    width: markerWidth+"pt",
+    height: markerHeight+"pt",
     fill: 0
 };
 
@@ -18,18 +19,21 @@ export default class Car extends Marker {
             latitude: props.latitude,
             longitude: props.longitude,
             course: props.course || 0, //North
-            color: props.color || 0 //black
+            color: props.color || 0, //black
+            devname: props.devname || "unknown"
         };
     }
 
     render () {
         return(
             <Marker {...this.props} offsetLeft={-markerWidth/2} offsetTop={-markerHeight/2} >
-                <ReactSVG src={carTopIcon} alt="&#x1F698" svgStyle={{
-                    ...markerStyle,
-                    fill: this.props.color,
-                    transform: "rotate("+(this.props.course||0)+"deg)"
-                }} />
+                <Tooltip title={this.props.devname}>
+                    <ReactSVG src={carTopIcon} alt="&#x1F698" svgStyle={{
+                        ...markerStyle,
+                        fill: this.props.color,
+                        transform: "rotate("+(this.props.course||0)+"deg)"
+                    }} />
+                </Tooltip>
             </Marker>
         )
     }

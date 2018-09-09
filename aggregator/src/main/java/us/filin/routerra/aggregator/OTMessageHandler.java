@@ -20,6 +20,7 @@ import us.filin.routerra.data.service.LocationRepository;
 import us.filin.routerra.data.service.Repositories;
 
 import java.io.IOException;
+import java.util.Date;
 
 public class OTMessageHandler implements MessageHandler {
     static final private Logger LOG = LoggerFactory.getLogger(OTMessageHandler.class);
@@ -66,23 +67,14 @@ public class OTMessageHandler implements MessageHandler {
                         .course(owntracksLocation.getCourse())
                         .latitude(owntracksLocation.getLatitude())
                         .longitude(owntracksLocation.getLongitude())
-                        //.device(null)
+                        .device(deviceId)
+                        .tstamp(owntracksLocation.getDate())
                         .build();
 
-                Location saved = locationRepository.saveAndFlush(location);
-
+                Location saved = locationRepository.save(location);
                 LOG.info("saved location {} {}", saved.getId(), saved);
 
-                Location location2 = locationRepository.getOne(saved.getId());
-
-                LOG.info("saved location check {} {}", location2);
-
-                device.setLastLocation(location2);
-                deviceRepository.save(device);
-
-                Device device2 = deviceRepository.getOne(deviceId);
-                LOG.info("device {} {}", device2.getId(), device2);
-
+                deviceRepository.updateLocation(deviceId);
             }
 
         } catch (IOException e) {

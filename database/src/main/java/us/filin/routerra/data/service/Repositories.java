@@ -17,7 +17,7 @@ import us.filin.routerra.data.jpa.Fleet;
 import java.util.List;
 
 @Component
-//@Transactional
+@Transactional
 @Getter()
 public class Repositories {
 	@Autowired

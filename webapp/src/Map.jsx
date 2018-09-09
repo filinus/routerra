@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import ReactMapGL from 'react-map-gl';
+import ReactMapGL, {NavigationControl} from 'react-map-gl';
 import Car from './Car.jsx';
 import axios from 'axios';
 
@@ -30,44 +30,46 @@ class Map extends Component {
     }
 
     componentDidMount() {
-        //var intervalId = setInterval(this.timer.bind(this), 2000);
+        var intervalId = setInterval(this.timer.bind(this), 10000);
         // store intervalId in the state so it can be accessed later:
-        ////this.setState({intervalId: intervalId});
+        this.setState({intervalId: intervalId});
 
         window.addEventListener('resize', this._resize);
         this._resize();
 
+        this._doAjax();
+    }
+
+    _doAjax () {
+        const url = "http://localhost:8080/devices";
         const config = {headers: {'Access-Control-Allow-Origin': '*'}};
-        axios.get("http://localhost:8080/devices", config)
+        axios.get(url, config)
             .then(res => {
-                console.log("received locations response:", res);
+                console.log(url, res);
                 const data = res.data;
                 if (res.status===200 && data && data.content) {
                     console.info("cars found:", data.content);
                     this.setState({cars: data.content});
+                    this.render();
                 } else {
                     console.error("bad response");
                 }
             })
-
     }
 
     componentWillUnmount() {
         // use intervalId from the state to clear the interval
-        ////if (this.state.intervalId)
-        ////    clearInterval(this.state.intervalId);
+        if (this.state.intervalId)
+            clearInterval(this.state.intervalId);
         window.removeEventListener('resize', this._resize);
     }
 
-    // timer() {
-    //     this.state.cars.map((car, index) => {
-    //         car.rotation += index - 0.7;
-    //         car.longitude += (index - 1.7) * 0.002;
-    //     });
-    //     this.setState({cars: this.state.cars });
-    // }
+    timer() {
+        this._doAjax();
+    }
 
     render() {
+        console.log("render map:",this.state);
         return (
             <div id="mapContainer" style={mapContainerStyle}>
                 <ReactMapGL
@@ -77,7 +79,7 @@ class Map extends Component {
                     mapStyle='mapbox://styles/mapbox/basic-v9'
                 >
                     {this.state.cars.map((car, index) =>
-                        <Car {...car.lastLocation} color={car.color} key={index}/>
+                        <Car {...car.lastLocation} {...car} key={car.id}/>
                     )}
                 </ReactMapGL>
             </div>
