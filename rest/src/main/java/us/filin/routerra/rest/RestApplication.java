@@ -6,6 +6,8 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.data.rest.RepositoryRestMvcAutoConfiguration;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.ImportResource;
 import org.springframework.data.rest.core.config.RepositoryRestConfiguration;
 import org.springframework.data.rest.core.mapping.RepositoryDetectionStrategy;
 import org.springframework.data.rest.webmvc.config.RepositoryRestConfigurerAdapter;
@@ -17,9 +19,12 @@ import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 import us.filin.routerra.data.RouterraDatabase;
+import us.filin.routerra.data.service.Repositories;
 
 @SpringBootApplication
 @RouterraDatabase
+@ImportResource("classpath:beans.xml")
+@ComponentScan(basePackages = {"us.filin.routerra.data.service", "us.filin.routerra.rest"})
 public class RestApplication {
 
     public static void main(String[] args) {

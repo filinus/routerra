@@ -48,6 +48,8 @@ public class RestApplicationTests {
         this.mvc.perform(get("/devices")).andExpect(status().isOk())
                 .andExpect(content().string(containsString("content")));
     }
+
+
 }
 
 

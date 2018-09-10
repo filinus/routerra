@@ -1,7 +1,6 @@
 package us.filin.routerra.aggregator;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.eclipse.paho.client.mqttv3.MqttTopic;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +19,6 @@ import us.filin.routerra.data.service.LocationRepository;
 import us.filin.routerra.data.service.Repositories;
 
 import java.io.IOException;
-import java.util.Date;
 
 public class OTMessageHandler implements MessageHandler {
     static final private Logger LOG = LoggerFactory.getLogger(OTMessageHandler.class);

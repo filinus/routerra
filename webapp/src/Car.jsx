@@ -25,6 +25,7 @@ export default class Car extends Marker {
     }
 
     render () {
+        console.log("render the car:", this.props);
         return(
             <Marker {...this.props} offsetLeft={-markerWidth/2} offsetTop={-markerHeight/2} >
                 <Tooltip title={this.props.devname}>
