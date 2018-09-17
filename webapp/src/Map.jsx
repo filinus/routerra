@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
-import ReactMapGL, {NavigationControl} from 'react-map-gl';
+import ReactMapGL from 'react-map-gl';
 import Car from './Car.jsx';
-import axios from 'axios';
+import getData from "./getdata.js";
 
 const TOKEN = "pk.eyJ1IjoiZmlsaW51cyIsImEiOiJjamxpb2RsY2swM2Q1M3FvYWN6cnF3M3U0In0.t-8oNaXKO_tIPO1_K9ZqXw"; //https://www.mapbox.com/help/how-access-tokens-work/
 
@@ -41,19 +41,10 @@ class Map extends Component {
     }
 
     _doAjax () {
-        const url = "http://localhost:8080/devices";
-        const config = {headers: {'Access-Control-Allow-Origin': '*'}};
-        axios.get(url, config)
-            .then(res => {
-                console.log(url, res);
-                const data = res.data;
-                if (res.status===200 && data && data.content) {
-                    console.info("cars found:", data.content);
-                    this.setState({cars: data.content});
-                    this.render();
-                } else {
-                    console.error("bad response");
-                }
+        getData('/devices')
+            .then(data => {
+                console.info("cars found:", data.content);
+                this.setState({cars: data.content});
             })
     }
 

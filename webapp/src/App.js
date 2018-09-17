@@ -6,7 +6,7 @@ import Toolbar from '@material-ui/core/Toolbar'
 import Typography from '@material-ui/core/Typography'
 import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
-import axios from 'axios';
+import getData from "./getdata.js";
 
 
 //const cfg = require('dotenv').config();
@@ -23,14 +23,10 @@ class App extends Component {
   }
 
   componentDidMount() {
-      const config = {headers: {'Access-Control-Allow-Origin': '*'}};
-      axios.get("http://localhost:8080/fleets", config)
-          .then(res => {
+      getData("fleets")
+          .then(data => {
               console.log("received fleet list");
-              const data = res.data;
-              if (res.status===200 && data && data.content) {
-                  this.setState({response: data});
-              }
+              this.setState({response: data});
           })
   }
 
