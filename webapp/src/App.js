@@ -25,6 +25,7 @@ class App extends Component {
   componentDidMount() {
       getData("fleets")
           .then(data => {
+              if (!data) return;
               console.log("received fleet list");
               this.setState({response: data});
           })

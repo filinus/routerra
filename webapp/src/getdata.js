@@ -11,12 +11,11 @@ async function getData (relativeUrl) {
             return response.data;
         } else {
             console.error(url, response);
-            throw "request failed";
         }
     } catch (e) {
         console.error(url, e);
-        return null;
     }
+    return null;
 }
 
 export default getData;

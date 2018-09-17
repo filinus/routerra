@@ -43,6 +43,7 @@ class Map extends Component {
     _doAjax () {
         getData('/devices')
             .then(data => {
+                if (!data) return;
                 console.info("cars found:", data.content);
                 this.setState({cars: data.content});
             })
