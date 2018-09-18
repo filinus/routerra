@@ -41,7 +41,7 @@ class Map extends Component {
     }
 
     _doAjax () {
-        getData('/devices')
+        getData('devices')
             .then(data => {
                 if (!data) return;
                 console.info("cars found:", data.content);
