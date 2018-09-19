@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import ReactMapGL from 'react-map-gl';
+import ReactMapGL, {NavigationControl} from 'react-map-gl';
 import Car from './Car.jsx';
 import getData from "./getdata.js";
 
@@ -9,6 +9,13 @@ const mapContainerStyle = {
     width: "100%",
     height: "100%",
     textAlign: "left"
+};
+
+const navStyle = {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    padding: '10px'
 };
 
 class Map extends Component {
@@ -66,10 +73,13 @@ class Map extends Component {
             <div id="mapContainer" style={mapContainerStyle}>
                 <ReactMapGL
                     {...this.state.viewport}
-                    onViewportChange={(viewport) => this.setState({viewport})}
+                    onViewportChange={(viewport) => this._updateViewport(viewport)}
                     mapboxApiAccessToken={TOKEN}
                     mapStyle='mapbox://styles/mapbox/basic-v9'
                 >
+                    <div className="nav" style={navStyle}>
+                        <NavigationControl  onViewportChange={(viewport) => this._updateViewport(viewport)} />
+                    </div>
                     {this.state.cars.map((car, index) =>
                         <Car {...car.lastLocation} {...car} key={car.id}/>
                     )}
@@ -79,6 +89,7 @@ class Map extends Component {
     }
 
     _resize = () => {
+        console.log("_resize:");
         this.setState({
             viewport: {
                 ...this.state.viewport,
@@ -89,6 +100,7 @@ class Map extends Component {
     };
 
     _updateViewport = (viewport) => {
+        console.log("_updateViewport:", viewport);
         this.setState({viewport});
     }
 }
