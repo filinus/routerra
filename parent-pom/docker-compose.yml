@@ -1,0 +1,40 @@
+version: '3'
+
+services:
+  docker-mysql:
+    image: mysql:latest
+    environment:
+    - MYSQL_ROOT_PASSWORD=root
+    - MYSQL_DATABASE=test
+    - MYSQL_PASSWORD=root
+    ports:
+    - 13306:3306
+    networks:
+    - routerra-network
+
+  aggregator:
+    image: aggregator:latest
+    depends_on:
+      - docker-mysql
+    build:
+      context: ../aggregator
+      dockerfile: Dockerfile
+    networks:
+    - routerra-network  
+
+  rest:
+    image: rest:latest
+    depends_on:
+      - docker-mysql
+      - aggregator
+    build:
+      context: ../rest
+      dockerfile: Dockerfile
+    ports:
+    - 8087:8080
+    networks:
+    - routerra-network
+
+networks:
+  routerra-network:
+    driver: bridge
