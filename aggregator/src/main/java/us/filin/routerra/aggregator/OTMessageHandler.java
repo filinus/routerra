@@ -8,6 +8,7 @@ import org.springframework.messaging.Message;
 import org.springframework.messaging.MessageHandler;
 import org.springframework.messaging.MessageHeaders;
 import org.springframework.messaging.MessagingException;
+import org.springframework.util.StringUtils;
 import us.filin.routerra.aggregator.message.OwntracksLocation;
 import us.filin.routerra.aggregator.message.OwntracksMessage;
 import us.filin.routerra.data.jpa.CMLogin;
@@ -39,19 +40,28 @@ public class OTMessageHandler implements MessageHandler {
         DeviceRepository deviceRepository = repositories.getDevice();
         LocationRepository locationRepository = repositories.getLocation();
         try {
+            //TODO: extract and validate MQTT message
             MessageHeaders messageHeaders = message.getHeaders();
             String topic = (String) messageHeaders.get("mqtt_receivedTopic");
+            if (StringUtils.isEmpty(topic)) {
+                LOG.warn("header mqtt_receivedTopic not found");
+                return;
+            }
             String[] chunks = topic.split("/");
             String cmLoginName = chunks[1];
             String devName = chunks[2];
+            //
             //Fleet fleet = repositories.lookupFleetByCMLogin(cmLoginName);
             CMLogin cmLogin = repositories.getCmLogin().findByLogin(cmLoginName);
 
+            //TODO: put into routine
             Device device = repositories.getDevice().findByLoginAndDevname(cmLogin, devName);
             if (device == null) {
                 device = new Device(cmLogin.getFleet(), cmLogin, devName, null);
                 device = repositories.getDevice().save(device);
             }
+            //
+
             final String deviceId = device.getId();
             LOG.info("device {} {}", deviceId, device);
 
@@ -59,18 +69,7 @@ public class OTMessageHandler implements MessageHandler {
             LOG.info("parsed payload: \n\t{}", owntracksMessage);
 
             if ("location".equals(owntracksMessage.getType())) {
-                OwntracksLocation owntracksLocation = (OwntracksLocation) owntracksMessage;
-                Location location = Location
-                        .builder()
-                        .course(owntracksLocation.getCourse())
-                        .latitude(owntracksLocation.getLatitude())
-                        .longitude(owntracksLocation.getLongitude())
-                        .device(deviceId)
-                        .tstamp(owntracksLocation.getDate())
-                        .build();
-
-                Location saved = locationRepository.save(location);
-                LOG.info("saved location {} {}", saved.getId(), saved);
+                saveDeviceLocation((OwntracksLocation) owntracksMessage, device);
 
                 deviceRepository.updateLocation(deviceId);
             }
@@ -80,4 +79,24 @@ public class OTMessageHandler implements MessageHandler {
         }
 
     }
+
+    Location saveDeviceLocation(OwntracksLocation owntracksLocation, Device device) {
+        LocationRepository locationRepository = repositories.getLocation();
+        String deviceId = device.getId();
+        Location location = Location
+                .builder()
+                .course(owntracksLocation.getCourse())
+                .latitude(owntracksLocation.getLatitude())
+                .longitude(owntracksLocation.getLongitude())
+                .device(deviceId)
+                .tstamp(owntracksLocation.getDate())
+                .build();
+
+        Location saved = locationRepository.save(location);
+        LOG.info("saved location {} {}", saved.getId(), saved);
+        return saved;
+
+    }
+
+
 }

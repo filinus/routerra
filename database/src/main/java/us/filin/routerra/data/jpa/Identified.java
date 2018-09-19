@@ -2,6 +2,7 @@ package us.filin.routerra.data.jpa;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.Column;
@@ -13,6 +14,7 @@ import java.io.Serializable;
 
 @MappedSuperclass
 @Getter
+@Setter
 @NoArgsConstructor
 public abstract class Identified implements Serializable { //extends Timestamped
     private static final long serialVersionUID = 1L;

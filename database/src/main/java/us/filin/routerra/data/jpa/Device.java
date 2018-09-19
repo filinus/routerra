@@ -22,6 +22,7 @@ import javax.persistence.Table;
 @Setter
 @ToString
 @AllArgsConstructor
+@Builder
 @Table(
         name = "device",
         indexes = {
