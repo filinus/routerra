@@ -9,6 +9,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
+import org.mockito.Spy;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Page;
@@ -55,6 +56,9 @@ public class OTMessageHandlerTest {
     @Mock
     Repositories repositories;
 
+    @Spy
+    ObjectMapper objectMapper = new ObjectMapper();
+
     @InjectMocks
     @Resource
     OTMessageHandler otMessageHandler = new OTMessageHandler();
@@ -66,8 +70,8 @@ public class OTMessageHandlerTest {
         when(repositories.getDevice()).thenReturn(deviceRepository);
     }
 
-    @Test @Ignore
-    public void handleMessage() {
+    @Test
+    public void handleNonLocationMessage() {
         Device device = Device
                 .builder()
                 .devname("devname")
