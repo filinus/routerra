@@ -32,7 +32,9 @@ public class OTMessageHandler implements MessageHandler {
     @Override
     public void handleMessage(Message<?> message) throws MessagingException {
 
-        String payload = ((Message<String>)message).getPayload();
+        Message<?> rawMessage = message;
+        Message<Object> messageString = ((Message<Object>)rawMessage);
+        String payload = (String) messageString.getPayload();
 
         LOG.info("payload: \n\t{}\n\t{}\n\t{}\n\t{}", message, payload.getClass(), payload, message.getHeaders());
 
@@ -57,7 +59,7 @@ public class OTMessageHandler implements MessageHandler {
             LOG.info("parsed payload: \n\t{}", owntracksMessage);
 
             if ("location".equals(owntracksMessage.getType())) {
-                saveDeviceLocation((OwntracksLocation) owntracksMessage, deviceId);
+                saveLocation((OwntracksLocation) owntracksMessage, deviceId);
 
                 deviceRepository.updateLocation(deviceId);
             }
@@ -94,7 +96,7 @@ public class OTMessageHandler implements MessageHandler {
      * @param deviceId
      * @return
      */
-    public Location saveDeviceLocation(OwntracksLocation owntracksLocation, String deviceId) {
+    public Location saveLocation(OwntracksLocation owntracksLocation, String deviceId) {
         LocationRepository locationRepository = repositories.getLocation();
         Location location = Location
                 .builder()
@@ -106,7 +108,7 @@ public class OTMessageHandler implements MessageHandler {
                 .build();
 
         Location saved = locationRepository.save(location);
-        LOG.info("saved location {} {}", saved.getId(), saved);
+        LOG.info("saved location {}", saved);
         return saved;
     }
 

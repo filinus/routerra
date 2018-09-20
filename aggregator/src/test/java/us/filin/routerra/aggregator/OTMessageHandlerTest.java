@@ -1,40 +1,31 @@
 package us.filin.routerra.aggregator;
 
-import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.mockito.Spy;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.data.domain.Example;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.MessageHeaders;
+import us.filin.routerra.aggregator.message.OwntracksLocation;
 import us.filin.routerra.data.jpa.CMLogin;
-import us.filin.routerra.data.jpa.Device;
 import us.filin.routerra.data.jpa.Fleet;
 import us.filin.routerra.data.jpa.Location;
 import us.filin.routerra.data.service.CMLoginRepository;
 import us.filin.routerra.data.service.DeviceRepository;
+import us.filin.routerra.data.service.LocationRepository;
 import us.filin.routerra.data.service.Repositories;
 
-import javax.annotation.Resource;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.Collections;
 
-import static org.junit.Assert.*;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyBoolean;
 import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 public class OTMessageHandlerTest {
@@ -54,52 +45,65 @@ public class OTMessageHandlerTest {
     CMLoginRepository cmLoginRepository;
 
     @Mock
+    LocationRepository locationRepository;
+
+    @Mock
     Repositories repositories;
 
     @Spy
     ObjectMapper objectMapper = new ObjectMapper();
 
+    @Mock
+    OwntracksLocation owntracksLocation;
+
     @InjectMocks
-    @Resource
+    @Spy
     OTMessageHandler otMessageHandler = new OTMessageHandler();
+
+
+    private Message<?> createMessage(final String topic, final String payload) {
+        return new Message<Object>() {
+            @Override
+            public Object getPayload() {
+                return payload;
+            }
+
+            @Override
+            public MessageHeaders getHeaders() {
+                return new MessageHeaders(Collections.singletonMap("mqtt_receivedTopic", topic));
+            }
+        };
+    }
 
     @Before
     public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
         when(repositories.getCmLogin()).thenReturn(cmLoginRepository);
         when(repositories.getDevice()).thenReturn(deviceRepository);
+        when(repositories.getLocation()).thenReturn(locationRepository);
     }
 
     @Test
-    public void handleNonLocationMessage() {
-        Device device = Device
-                .builder()
-                .devname("devname")
-                .fleet(fleet)
-                .login(cmLogin)
-                .lastLocation(location)
-                .build();
-        device.setId("id");
+    public void testSaveLocation() {
+        otMessageHandler.saveLocation(owntracksLocation, "someDeviceId");
+    }
+
+
+    @Test
+    public void handleLocationMessage() {
         when(cmLoginRepository.findByLogin(anyString())).thenReturn(cmLogin);
-        when(deviceRepository.findByLoginAndDevname(any(CMLogin.class), anyString())).thenReturn(device);
 
-        final Map<String, Object> map = new HashMap<String, Object>() {{
-            put("mqtt_receivedTopic", "owntracks/user1/device1");
-        }};
+        final String topic = "owntracks/user1/device1";
 
+        Message<?> notLocationMessage = createMessage(topic, "{}");
+        Message<?> locationMessage = createMessage(topic, "{\"_type\":\"location\",\"lat\":\"11.1\",\"lon\":\"22.2\"}");
 
-        Message<?> message = new Message<Object>() {
-            @Override
-            public Object getPayload() {
-                return "{}";
-            }
+        doReturn("deviceId").when(otMessageHandler).getDeviceIdByLoginAndDevname(any(), anyString());
 
-            @Override
-            public MessageHeaders getHeaders() {
-                return new MessageHeaders(map);
-            }
-        };
+        otMessageHandler.handleMessage(notLocationMessage);
+        verify(otMessageHandler, never()).saveLocation(any(), anyString());
 
-        otMessageHandler.handleMessage(message);
+        otMessageHandler.handleMessage(locationMessage);
+        verify(otMessageHandler, times(1)).saveLocation(any(), anyString());
     }
 }
