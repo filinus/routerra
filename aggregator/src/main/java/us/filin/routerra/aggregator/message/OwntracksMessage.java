@@ -17,9 +17,7 @@ import lombok.*;
         @JsonSubTypes.Type(value = OwntracksTransition.class, name = "transition"),
         @JsonSubTypes.Type(value = OwntracksLWT.class, name = "lwt")
 })
-@Getter
-@Setter
-@ToString
+@Data
 abstract public class OwntracksMessage {
     @JsonTypeId
     @JsonProperty("_type")

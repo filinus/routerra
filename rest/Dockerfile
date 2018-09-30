@@ -16,5 +16,8 @@ ARG JAR_FILE=target/rest-0.0.1-SNAPSHOT.jar
 # Add the application's jar to the container
 ADD ${JAR_FILE} rest.jar
 
+HEALTHCHECK --interval=10s --timeout=3s --retries=10 \
+  CMD curl --silent --fail localhost:8080/actuator/health || exit 1
+
 # Run the jar file
 ENTRYPOINT ["java","-Djava.security.egd=file:/dev/./urandom","-jar","/rest.jar"]

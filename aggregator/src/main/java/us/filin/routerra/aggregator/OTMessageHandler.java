@@ -1,6 +1,7 @@
 package us.filin.routerra.aggregator;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,9 +21,8 @@ import us.filin.routerra.data.service.Repositories;
 
 import java.io.IOException;
 
+@Slf4j
 public class OTMessageHandler implements MessageHandler {
-    static final private Logger LOG = LoggerFactory.getLogger(OTMessageHandler.class);
-
     @Autowired
     private Repositories repositories;
 
@@ -36,7 +36,7 @@ public class OTMessageHandler implements MessageHandler {
         Message<Object> messageString = ((Message<Object>)rawMessage);
         String payload = (String) messageString.getPayload();
 
-        LOG.info("payload: \n\t{}\n\t{}\n\t{}\n\t{}", message, payload.getClass(), payload, message.getHeaders());
+        log.info("payload: \n\t{}\n\t{}\n\t{}\n\t{}", message, payload.getClass(), payload, message.getHeaders());
 
         DeviceRepository deviceRepository = repositories.getDevice();
         try {
@@ -44,7 +44,7 @@ public class OTMessageHandler implements MessageHandler {
             MessageHeaders messageHeaders = message.getHeaders();
             String topic = (String) messageHeaders.get("mqtt_receivedTopic");
             if (StringUtils.isEmpty(topic)) {
-                LOG.warn("header mqtt_receivedTopic not found");
+                log.warn("header mqtt_receivedTopic not found");
                 return;
             }
             String[] chunks = topic.split("/");
@@ -56,7 +56,7 @@ public class OTMessageHandler implements MessageHandler {
             final String deviceId = getDeviceIdByLoginAndDevname(cmLogin, devName);
 
             OwntracksMessage owntracksMessage = objectMapper.readValue(payload, OwntracksMessage.class);
-            LOG.info("parsed payload: \n\t{}", owntracksMessage);
+            log.info("parsed payload: \n\t{}", owntracksMessage);
 
             if ("location".equals(owntracksMessage.getType())) {
                 saveLocation((OwntracksLocation) owntracksMessage, deviceId);
@@ -82,10 +82,10 @@ public class OTMessageHandler implements MessageHandler {
         Device device = repositories.getDevice().findByLoginAndDevname(cmLogin, devName);
         if (device == null) {
             device = new Device(cmLogin.getFleet(), cmLogin, devName, null);
-            LOG.debug("new device {}", device);
+            log.debug("new device {}", device);
             device = repositories.getDevice().save(device);
         }
-        LOG.debug("device {}", device);
+        log.debug("device {}", device);
         return device.getId();
     }
 
@@ -108,7 +108,7 @@ public class OTMessageHandler implements MessageHandler {
                 .build();
 
         Location saved = locationRepository.save(location);
-        LOG.info("saved location {}", saved);
+        log.info("saved location {}", saved);
         return saved;
     }
 

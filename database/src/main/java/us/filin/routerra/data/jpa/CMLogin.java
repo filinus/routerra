@@ -1,9 +1,7 @@
 package us.filin.routerra.data.jpa;
 
-import lombok.Getter;
+import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
 import org.hibernate.annotations.NaturalId;
 
 import javax.persistence.Entity;
@@ -15,9 +13,7 @@ import javax.persistence.Table;
 
 @NoArgsConstructor
 @Entity
-@Getter
-@Setter
-@ToString
+@Data
 @Table(
         name = "cmlogin",
         indexes = {

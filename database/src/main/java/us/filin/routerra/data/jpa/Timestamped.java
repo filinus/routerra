@@ -1,9 +1,8 @@
 package us.filin.routerra.data.jpa;
 
 import lombok.AccessLevel;
-import lombok.Getter;
+import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 import javax.persistence.Column;
 import javax.persistence.MappedSuperclass;
@@ -14,8 +13,7 @@ import javax.persistence.TemporalType;
 import java.util.Date;
 
 @MappedSuperclass
-@Getter
-@Setter
+@Data
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public abstract class Timestamped {
 
