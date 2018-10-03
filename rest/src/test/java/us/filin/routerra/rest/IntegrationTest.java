@@ -15,12 +15,12 @@ import static org.junit.Assert.assertFalse;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest(classes = RestApplication.class)
-@Ignore
 public class IntegrationTest {
     @Autowired
     Repositories repositories;
 
     @Test
+    @Ignore
     public void devicesAreNotEmpty() {
 
         List<Device> result = this.repositories.getDevice().findAll();

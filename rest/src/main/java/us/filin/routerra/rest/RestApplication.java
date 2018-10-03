@@ -2,6 +2,7 @@ package us.filin.routerra.rest;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
@@ -21,9 +22,11 @@ import us.filin.routerra.data.RouterraDatabase;
 @RouterraDatabase
 @ImportResource("classpath:beans.xml")
 @ComponentScan(basePackages = {"us.filin.routerra.data.service", "us.filin.routerra.rest"})
+@Slf4j
 public class RestApplication {
 
     public static void main(String[] args) {
+        log.info("Starting REST with args {}", args);
         SpringApplication.run(RestApplication.class, args);
     }
 
