@@ -2,9 +2,9 @@ import axios from 'axios';
 
 async function getData (relativeUrl) {
     const config = {headers: {'Access-Control-Allow-Origin': '*'}};
-    const url = "http://localhost:8080/" + relativeUrl;
+    const url = "http://routerra.aws.filin.us:8080/" + relativeUrl;
     try {
-        const response = await axios.get("http://localhost:8080/" + relativeUrl, config);
+        const response = await axios.get(url, config);
 
         if (response.status===200 && response.data && response.data.content) {
             console.log(url, response);
