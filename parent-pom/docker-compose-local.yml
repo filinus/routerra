@@ -1,0 +1,70 @@
+version: '3'
+
+services:
+  docker-mysql:
+    container_name: mysql_container
+    image: mysql:latest
+    environment:
+    - MYSQL_ROOT_PASSWORD=root
+    - MYSQL_DATABASE=test
+    - MYSQL_PASSWORD=root
+    ports:
+    - 13306:3306
+    healthcheck:
+      test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost"]
+      timeout: 10s
+      retries: 10
+    networks:
+    - routerra-network
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    container_name: phpmyadmin_containter
+    environment:
+    - PMA_ARBITRARY=1
+    #- PMA_HOSTS=docker-mysql
+    restart: always
+    ports:
+    - 8088:80
+    volumes:
+    - /sessions
+    depends_on:
+    - docker-mysql
+    healthcheck:
+      test: ["CMD", "wget -O -  http://localhost 2>/dev/null  | grep phpMyAdmin"]
+      timeout: 15s
+      retries: 10
+    networks:
+    - routerra-network
+
+
+  aggregator:
+    image: routerra/aggregator:latest
+    depends_on:
+      - docker-mysql
+    links:
+      - docker-mysql
+    build:
+      context: ../aggregator
+      dockerfile: Dockerfile
+    #command: ["./wait-for-it.sh", "docker-mysql:3306"]
+    networks:
+    - routerra-network
+
+  rest:
+    image: routerra/rest:latest
+    depends_on:
+      - docker-mysql
+      - aggregator
+    command: ["./wait-for-it.sh", "docker-mysql:3306"]
+    build:
+      context: ../rest
+      dockerfile: Dockerfile
+    ports:
+    - 8087:8080
+    networks:
+    - routerra-network
+
+networks:
+  routerra-network:
+    driver: bridge
