@@ -3,7 +3,9 @@ import axios from 'axios';
 async function getData (relativeUrl) {
     const config = {headers: {'Access-Control-Allow-Origin': '*'}};
     //const url = "http://routerra.aws.filin.us:8080/" + relativeUrl;
-    const url = "https://s3-us-west-1.amazonaws.com/routerra/"+relativeUrl+".json";
+    //const url = "https://s3-us-west-1.amazonaws.com/routerra/"+relativeUrl+".json";
+    const url = "https://filinus.github.io/routerra/mockjson/"+relativeUrl+".json";
+
     try {
         const response = await axios.get(url, config);
 
