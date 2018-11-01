@@ -1,0 +1,147 @@
+
+{
+  "links" : [ {
+    "rel" : "self",
+    "href" : "http://localhost:8087/devices{?page,size,sort,projection}",
+    "hreflang" : null,
+    "media" : null,
+    "title" : null,
+    "type" : null,
+    "deprecation" : null
+  }, {
+    "rel" : "profile",
+    "href" : "http://localhost:8087/profile/devices",
+    "hreflang" : null,
+    "media" : null,
+    "title" : null,
+    "type" : null,
+    "deprecation" : null
+  }, {
+    "rel" : "search",
+    "href" : "http://localhost:8087/devices/search",
+    "hreflang" : null,
+    "media" : null,
+    "title" : null,
+    "type" : null,
+    "deprecation" : null
+  } ],
+  "content" : [ {
+    "devname" : "iphone7",
+    "lastLocation" : {
+      "device" : "804ff5f0-3071-4ee9-a060-60f9791a6002",
+      "latitude" : 37.50428022096472,
+      "longitude" : -122.2616814029433,
+      "course" : null,
+      "tstamp" : "2018-10-03T17:56:37.000+0000",
+      "handler" : { },
+      "hibernateLazyInitializer" : { }
+    },
+    "fleet" : {
+      "fleetname" : "Val Garage"
+    },
+    "id" : "804ff5f0-3071-4ee9-a060-60f9791a6002",
+    "links" : [ {
+      "rel" : "self",
+      "href" : "http://localhost:8087/devices/804ff5f0-3071-4ee9-a060-60f9791a6002",
+      "hreflang" : null,
+      "media" : null,
+      "title" : null,
+      "type" : null,
+      "deprecation" : null
+    }, {
+      "rel" : "device",
+      "href" : "http://localhost:8087/devices/804ff5f0-3071-4ee9-a060-60f9791a6002{?projection}",
+      "hreflang" : null,
+      "media" : null,
+      "title" : null,
+      "type" : null,
+      "deprecation" : null
+    }, {
+      "rel" : "fleet",
+      "href" : "http://localhost:8087/devices/804ff5f0-3071-4ee9-a060-60f9791a6002/fleet",
+      "hreflang" : null,
+      "media" : null,
+      "title" : null,
+      "type" : null,
+      "deprecation" : null
+    }, {
+      "rel" : "lastLocation",
+      "href" : "http://localhost:8087/devices/804ff5f0-3071-4ee9-a060-60f9791a6002/lastLocation{?projection}",
+      "hreflang" : null,
+      "media" : null,
+      "title" : null,
+      "type" : null,
+      "deprecation" : null
+    }, {
+      "rel" : "login",
+      "href" : "http://localhost:8087/devices/804ff5f0-3071-4ee9-a060-60f9791a6002/login",
+      "hreflang" : null,
+      "media" : null,
+      "title" : null,
+      "type" : null,
+      "deprecation" : null
+    } ]
+  }, {
+    "devname" : "LG",
+    "lastLocation" : {
+      "device" : "746f2d67-ea83-4d88-9551-8301b9551ee5",
+      "latitude" : 37.5043811,
+      "longitude" : -122.261559,
+      "course" : null,
+      "tstamp" : "2018-09-08T03:14:10.000+0000",
+      "handler" : { },
+      "hibernateLazyInitializer" : { }
+    },
+    "fleet" : {
+      "fleetname" : "Val Garage"
+    },
+    "id" : "746f2d67-ea83-4d88-9551-8301b9551ee5",
+    "links" : [ {
+      "rel" : "self",
+      "href" : "http://localhost:8087/devices/746f2d67-ea83-4d88-9551-8301b9551ee5",
+      "hreflang" : null,
+      "media" : null,
+      "title" : null,
+      "type" : null,
+      "deprecation" : null
+    }, {
+      "rel" : "device",
+      "href" : "http://localhost:8087/devices/746f2d67-ea83-4d88-9551-8301b9551ee5{?projection}",
+      "hreflang" : null,
+      "media" : null,
+      "title" : null,
+      "type" : null,
+      "deprecation" : null
+    }, {
+      "rel" : "fleet",
+      "href" : "http://localhost:8087/devices/746f2d67-ea83-4d88-9551-8301b9551ee5/fleet",
+      "hreflang" : null,
+      "media" : null,
+      "title" : null,
+      "type" : null,
+      "deprecation" : null
+    }, {
+      "rel" : "lastLocation",
+      "href" : "http://localhost:8087/devices/746f2d67-ea83-4d88-9551-8301b9551ee5/lastLocation{?projection}",
+      "hreflang" : null,
+      "media" : null,
+      "title" : null,
+      "type" : null,
+      "deprecation" : null
+    }, {
+      "rel" : "login",
+      "href" : "http://localhost:8087/devices/746f2d67-ea83-4d88-9551-8301b9551ee5/login",
+      "hreflang" : null,
+      "media" : null,
+      "title" : null,
+      "type" : null,
+      "deprecation" : null
+    } ]
+  } ],
+  "page" : {
+    "size" : 20,
+    "totalElements" : 2,
+    "totalPages" : 1,
+    "number" : 0
+  }
+}

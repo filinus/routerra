@@ -1,0 +1,87 @@
+
+{
+  "links" : [ {
+    "rel" : "self",
+    "href" : "http://localhost:8087/fleets{?page,size,sort}",
+    "hreflang" : null,
+    "media" : null,
+    "title" : null,
+    "type" : null,
+    "deprecation" : null
+  }, {
+    "rel" : "profile",
+    "href" : "http://localhost:8087/profile/fleets",
+    "hreflang" : null,
+    "media" : null,
+    "title" : null,
+    "type" : null,
+    "deprecation" : null
+  } ],
+  "content" : [ {
+    "fleetname" : "Val Garage",
+    "content" : [ ],
+    "links" : [ {
+      "rel" : "self",
+      "href" : "http://localhost:8087/fleets/f1ee7001-56e9-43ee-9cc8-15937e9a841b",
+      "hreflang" : null,
+      "media" : null,
+      "title" : null,
+      "type" : null,
+      "deprecation" : null
+    }, {
+      "rel" : "fleet",
+      "href" : "http://localhost:8087/fleets/f1ee7001-56e9-43ee-9cc8-15937e9a841b",
+      "hreflang" : null,
+      "media" : null,
+      "title" : null,
+      "type" : null,
+      "deprecation" : null
+    } ]
+  }, {
+    "fleetname" : "Sunnyvale Lab",
+    "content" : [ ],
+    "links" : [ {
+      "rel" : "self",
+      "href" : "http://localhost:8087/fleets/89619fd4-56e9-43ee-9cc8-15937e9a8ccc",
+      "hreflang" : null,
+      "media" : null,
+      "title" : null,
+      "type" : null,
+      "deprecation" : null
+    }, {
+      "rel" : "fleet",
+      "href" : "http://localhost:8087/fleets/89619fd4-56e9-43ee-9cc8-15937e9a8ccc",
+      "hreflang" : null,
+      "media" : null,
+      "title" : null,
+      "type" : null,
+      "deprecation" : null
+    } ]
+  }, {
+    "fleetname" : "UPS South San Francisco",
+    "content" : [ ],
+    "links" : [ {
+      "rel" : "self",
+      "href" : "http://localhost:8087/fleets/89619fd4-56e9-43ee-9cc8-15937e9a8ddd",
+      "hreflang" : null,
+      "media" : null,
+      "title" : null,
+      "type" : null,
+      "deprecation" : null
+    }, {
+      "rel" : "fleet",
+      "href" : "http://localhost:8087/fleets/89619fd4-56e9-43ee-9cc8-15937e9a8ddd",
+      "hreflang" : null,
+      "media" : null,
+      "title" : null,
+      "type" : null,
+      "deprecation" : null
+    } ]
+  } ],
+  "page" : {
+    "size" : 20,
+    "totalElements" : 3,
+    "totalPages" : 1,
+    "number" : 0
+  }
+}
