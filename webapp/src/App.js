@@ -8,9 +8,7 @@ import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
 import getData from "./getdata.js";
 
-
-//const cfg = require('dotenv').config();
-//console.log(cfg);
+console.log(process.env.NODE_ENV || "n/a", process.env.PUBLIC_URL || "n/a");
 
 const kindaRespone = {content: []};
 
