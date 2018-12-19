@@ -5,6 +5,7 @@ import Toolbar from '@material-ui/core/Toolbar'
 import Typography from '@material-ui/core/Typography'
 import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
+import Button from '@material-ui/core/Button';
 import getData from "./getdata.js";
 import propTypes from 'prop-types';
 import { connect } from 'react-redux';
@@ -21,6 +22,10 @@ class AppMenu extends Component {
     this.state = {
         response: kindaResponse
     }
+  }
+
+  static doLogin() {
+     console.log("do login");
   }
 
   handleLogIn(e, {name}) {
@@ -45,7 +50,7 @@ class AppMenu extends Component {
 
   render() {
     const {isAuthenticated, currentUser} = this.props;
-    const loginButton =  isAuthenticated ? "log out":"login in";
+    //const loginButton =  isAuthenticated ? "logout":"login";
     return (
       <AppBar position="static">
           <Toolbar>
@@ -57,7 +62,12 @@ class AppMenu extends Component {
                       <MenuItem key={"fleet"+index}>{fleet.fleetname}</MenuItem>
                   )}
               </Select>
-              {loginButton}
+              {!isAuthenticated && (
+                  <Button color="inherit" onClick={AppMenu.doLogin()}>Login</Button>
+              )}
+              {isAuthenticated && (
+                  <Button color="inherit">Logout</Button>
+              )}
           </Toolbar>
       </AppBar>
     );
