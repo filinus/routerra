@@ -45,11 +45,13 @@ public class RepositoriesTest {
 		FleetRepository fleetRepository = repositories.getFleet();
 		List<Fleet> fleetList = fleetRepository.findAll();
 		assertNotNull(fleetList);
-		Fleet fleet = new Fleet();
+		final Fleet fleet = new Fleet();
 		fleet.setFleetname("Fleet name");
 		Fleet saved = fleetRepository.saveAndFlush(fleet);
-		Optional<Fleet> findSaved = fleetRepository.findById(saved.getId());
-		assertTrue(findSaved.isPresent());
+		Optional<Fleet> fleetOptional = fleetRepository.findById(saved.getId());
+		assertTrue(fleetOptional.isPresent());
+		Fleet foundFleet = fleetOptional.get();
+		assertEquals(fleet, foundFleet);
 	}
 
 	@Test
