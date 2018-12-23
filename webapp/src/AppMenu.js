@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import './App.css';
 import AppBar from '@material-ui/core/AppBar'
 import Toolbar from '@material-ui/core/Toolbar'
@@ -6,72 +6,80 @@ import Typography from '@material-ui/core/Typography'
 import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
 import Button from '@material-ui/core/Button';
-import getData from "./getdata.js";
+import getData from "./getdata";
 import propTypes from 'prop-types';
-import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
-import * as userActions from './userActions.js';
-import { STATE_KEY as USER_STATE_KEY, initialState } from './userReducer.js';
-
+import {connect} from 'react-redux';
+import {bindActionCreators} from 'redux';
+import * as userActions from './userActions';
+//import {STATE_KEY as USER_STATE_KEY, initialState} from './userReducer';
+import loginTab from './openWindow';
+import * as querystring from 'querystring'
+import * as randomstring from 'randomstring'
 
 const kindaResponse = {content: []};
 
 class AppMenu extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-        response: kindaResponse
+    constructor(props) {
+        super(props);
+        this.state = {
+            response: kindaResponse,
+        };
     }
-  }
 
-  static doLogin() {
-     console.log("do login");
-  }
+    handleLogIn(e) { // handleLogIn(e, {name}) {
+        console.log("do github login, state:", this.state);
+        const callBackUrl = process.env.PUBLIC_URL + '/loginsuccess.html';
+        //https://developer.github.com/apps/building-oauth-apps/authorizing-oauth-apps/#web-application-flow
+        //https://github.com/settings/applications/956071
+        const loginParams = {
+            client_id: 'e456e08e1451867af4bb',
+            redirect_uri: callBackUrl,
+            state: randomstring.generate() // 32 of [0-9 a-z A-Z]  https://www.npmjs.com/package/randomstring
+        };
+        const loginUrl = 'https://github.com/login/oauth/authorize?' + querystring.encode(loginParams);
+        const msg = loginTab(loginUrl);
+        msg.then(user => {
+            console.log("received user", user);
+            this.props.userActions.injectUser(user);
+        });
+    }
 
-  handleLogIn(e, {name}) {
-    //const msg = loginTab('/auth/github');
-    //msg.then(user => {
-    //    this.props.userActions.injectUser(user);
-    //});
-  }
+    handleLogOut(e) { //handleLogOut(e, {name}) {
+        this.props.userActions.logoutUser();
+    }
 
-  handleLogOut(e, {name}) {
-    this.props.userActions.logoutUser();
-  }
+    componentDidMount() {
+        getData("fleets")
+            .then(data => {
+                if (!data) return;
+                console.log("received fleet list");
+                this.setState({response: data});
+            })
+    }
 
-  componentDidMount() {
-      getData("fleets")
-          .then(data => {
-              if (!data) return;
-              console.log("received fleet list");
-              this.setState({response: data});
-          })
-  }
-
-  render() {
-    const {isAuthenticated, currentUser} = this.props;
-    //const loginButton =  isAuthenticated ? "logout":"login";
-    return (
-      <AppBar position="static">
-          <Toolbar>
-              <Typography variant="title" color="inherit"  className={"icon big car VDivider"}>
-                  Routerra Demo App
-              </Typography>
-              <Select autoWidth={true} displayEmpty={true}>
-                  {this.state.response.content.map((fleet, index) =>
-                      <MenuItem key={"fleet"+index}>{fleet.fleetname}</MenuItem>
-                  )}
-              </Select>
-              {!isAuthenticated && (
-                  <Button color="inherit" onClick={AppMenu.doLogin()}>Login</Button>
-              )}
-              {isAuthenticated && (
-                  <Button color="inherit">Logout</Button>
-              )}
-          </Toolbar>
-      </AppBar>
-    );
-  }
+    render() {
+        const {isAuthenticated, currentUser} = this.props;
+        return (
+            <AppBar position="static">
+                <Toolbar>
+                    <Typography variant="title" color="inherit" className={"icon big car VDivider"}>
+                        Routerra Demo App
+                    </Typography>
+                    <Select autoWidth={true} displayEmpty={true}>
+                        {this.state.response.content.map((fleet, index) =>
+                            <MenuItem key={"fleet" + index}>{fleet.fleetname}</MenuItem>
+                        )}
+                    </Select>
+                    {!isAuthenticated && (
+                        <Button color="inherit" onClick={this.handleLogIn.bind(this)}>Login</Button>
+                    )}
+                    {isAuthenticated && (
+                        <Button color="inherit" onClick={this.handleLogOut.bind(this)}>Logout {currentUser}</Button>
+                    )}
+                </Toolbar>
+            </AppBar>
+        );
+    }
 }
 
 AppMenu.PropTypes = {
@@ -79,14 +87,10 @@ AppMenu.PropTypes = {
     currentUser: propTypes.object
 };
 
-const mapStateToProps = state => (
-    (!(USER_STATE_KEY in state))
-    ? initialState
-    : {
-        isAuthenticated: state[USER_STATE_KEY].isAuthenticated,
-        currentUser: state[USER_STATE_KEY].user
-      }
-);
+const mapStateToProps = state => ({
+    isAuthenticated: state.isAuthenticated,
+    currentUser: state.user
+});
 
 const mapDispatchToProps = dispatch => ({
     userActions: bindActionCreators(userActions, dispatch)

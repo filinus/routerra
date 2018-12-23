@@ -1,0 +1,19 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>Login successful</title>
+</head>
+<body>
+<h1>Success</h1>
+<p>You are authenticated...</p>
+</body>
+<script>
+    document.body.onload = function() {
+        var injectedUser = JSON.stringify('mockuser');
+        window.opener.postMessage(
+            {payload: injectedUser, status: 'success'},
+            window.opener.location
+        );
+    };
+</script>
+</html>
