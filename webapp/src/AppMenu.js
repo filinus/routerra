@@ -82,7 +82,7 @@ class AppMenu extends Component {
     }
 }
 
-AppMenu.PropTypes = {
+AppMenu.propTypes = {
     isAuthenticated: propTypes.bool,
     currentUser: propTypes.object
 };
