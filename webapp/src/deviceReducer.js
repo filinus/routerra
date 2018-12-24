@@ -1,24 +1,22 @@
 import * as actionTypes from './allActionTypes';
 
-export const STATE_KEY = 'currentUser';
+//export const STATE_KEY = 'currentUser';
 
 export const initialState = {
-    isAuthenticated: false,
-    user: {}
+    devices: []
 };
 
-export default function userReducer(state = initialState, action = {}) {
+export default function deviceReducer(state = initialState, action = {}) {
     const {type, payload} = action;
 
     switch(type) {
-        case actionTypes.INJECT_USER:
+        case actionTypes.INJECT_DEVICES:
             return {
                 ...state,
-                isAuthenticated: true,
-                user: payload.user
+                devices: payload.devices
             };
 
-        case actionTypes.LOGOUT_USER:
+        case actionTypes.RESET_DEVICES:
             return {
                 ...initialState
             };

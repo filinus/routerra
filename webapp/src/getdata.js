@@ -12,7 +12,7 @@ async function getData (relativeUrl) {
         const response = await axios.get(url, config);
 
         if (response.status===200 && response.data && response.data.content) {
-            console.log(url, response);
+            console.debug(url, response);
             return response.data;
         } else {
             console.error(url, response);

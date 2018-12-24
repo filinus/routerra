@@ -2,6 +2,10 @@ import React, {Component} from 'react';
 import ReactMapGL, {NavigationControl} from 'react-map-gl';
 import Car from './Car.jsx';
 import getData from "./getdata.js";
+import propTypes from "prop-types";
+import {bindActionCreators} from "redux";
+import * as deviceActions from "./deviceActions";
+import {connect} from 'react-redux';
 
 const TOKEN = process.env.REACT_APP_MAPBOX_TOKEN; //https://www.mapbox.com/help/how-access-tokens-work/
 
@@ -31,13 +35,12 @@ class Map extends Component {
                 zoom: 9,
                 name: "Routerra",
 
-            },
-            cars: []
+            }
         };
     }
 
     componentDidMount() {
-        var intervalId = setInterval(this.timer.bind(this), 10000);
+        var intervalId = setInterval(this.timer.bind(this), 30000);
         // store intervalId in the state so it can be accessed later:
         this.setState({intervalId: intervalId});
 
@@ -51,8 +54,8 @@ class Map extends Component {
         getData('devices')
             .then(data => {
                 if (!data) return;
-                console.info("cars found:", data.content);
-                this.setState({cars: data.content});
+                //console.info("found cars in ajax:", data.content);
+                this.props.deviceActions.injectDeviceList(data.content);
             })
     }
 
@@ -68,7 +71,8 @@ class Map extends Component {
     }
 
     render() {
-        console.log("render map:",this.state);
+        const {carsOnMap} = this.props;
+        console.log("rendering map");
         return (
             <div id="mapContainer" style={mapContainerStyle}>
                 <ReactMapGL
@@ -80,8 +84,8 @@ class Map extends Component {
                     <div className="nav" style={navStyle}>
                         <NavigationControl  onViewportChange={(viewport) => this._updateViewport(viewport)} />
                     </div>
-                    {this.state.cars.map((car, index) =>
-                        <Car {...car.lastLocation} {...car} key={car.id}/>
+                    {carsOnMap.map((car, index) =>
+                        <Car {...car.lastLocation} {...car} key={car.id} index={index}/>
                     )}
                 </ReactMapGL>
             </div>
@@ -89,7 +93,7 @@ class Map extends Component {
     }
 
     _resize = () => {
-        console.log("_resize:");
+        //console.log("_resize:");
         this.setState({
             viewport: {
                 ...this.state.viewport,
@@ -100,9 +104,21 @@ class Map extends Component {
     };
 
     _updateViewport = (viewport) => {
-        console.log("_updateViewport:", viewport);
+        //console.log("_updateViewport:", viewport);
         this.setState({viewport});
     }
 }
 
-export default Map;
+Map.propTypes = {
+    carsOnMap : propTypes.any//propTypes.arrayOf(propTypes.object)
+};
+
+const mapStateToProps = state => ({
+    carsOnMap: state.device.devices
+});
+
+const mapDispatchToProps = dispatch => ({
+    deviceActions: bindActionCreators(deviceActions, dispatch)
+});
+
+export default connect(mapStateToProps , mapDispatchToProps)(Map);

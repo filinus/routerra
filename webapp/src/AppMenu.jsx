@@ -61,6 +61,7 @@ class AppMenu extends Component {
     }
 
     render() {
+        console.debug(this.props);
         const {isAuthenticated, currentUser} = this.props;
         return (
             <AppBar position="static">
@@ -77,7 +78,7 @@ class AppMenu extends Component {
                         <Button color="inherit" onClick={this.handleLogIn.bind(this)}>Login</Button>
                     )}
                     {isAuthenticated && (
-                        <Button color="inherit" onClick={this.handleLogOut.bind(this)}>Logout {currentUser}</Button>
+                        <Button color="inherit" onClick={this.handleLogOut.bind(this)}>Logout {currentUser.username}</Button>
                     )}
                 </Toolbar>
             </AppBar>
@@ -91,8 +92,8 @@ AppMenu.propTypes = {
 };
 
 const mapStateToProps = state => ({
-    isAuthenticated: state.isAuthenticated,
-    currentUser: state.user
+    isAuthenticated: state.user.isAuthenticated,
+    currentUser: state.user.user
 });
 
 const mapDispatchToProps = dispatch => ({

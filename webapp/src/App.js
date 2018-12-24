@@ -1,26 +1,41 @@
 import React, { Component } from 'react';
 import './App.css';
-import { createStore } from 'redux'
-import { Provider } from 'react-redux'
+import {bindActionCreators} from 'redux'
 import Map from './Map.jsx';
-import AppMenu from "./AppMenu";
-import userReducer from "./userReducer";
+import AppMenu from "./AppMenu.jsx";
+import propTypes from "prop-types";
+import * as userActions from "./userActions";
+import {connect} from 'react-redux';
 
 console.log(process.env.NODE_ENV || "n/a", process.env.PUBLIC_URL || "n/a");
 
-const store = createStore(userReducer);
-
 class App extends Component {
   render() {
+    const {isAuthenticated} = this.props;
     return (
-      <Provider store={store}>
-          <div className="App">
-              <AppMenu/>
+      <div className="App">
+          <AppMenu/>
+          {isAuthenticated && (
               <Map/>
-          </div>
-      </Provider>
+          )}
+          {!isAuthenticated && (
+              <div>login using one of oath provider to get access to your personalized map</div>
+          )}
+      </div>
     );
   }
 }
 
-export default App;
+App.propTypes = {
+    isAuthenticated: propTypes.bool
+};
+
+const mapStateToProps = state => ({
+    isAuthenticated: state.user.isAuthenticated
+});
+
+const mapDispatchToProps = dispatch => ({
+    userActions: bindActionCreators(userActions, dispatch)
+});
+
+export default connect(mapStateToProps , mapDispatchToProps)(App);
