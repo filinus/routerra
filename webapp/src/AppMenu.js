@@ -17,6 +17,8 @@ import * as querystring from 'querystring'
 import * as randomstring from 'randomstring'
 
 const kindaResponse = {content: []};
+const GITHUB_CLIENTID = process.env.REACT_APP_GITHUB_CLIENTID;
+const BASE_URL = process.env.PUBLIC_URL || process.env.REACT_APP_PUBLIC_URL;
 
 class AppMenu extends Component {
     constructor(props) {
@@ -27,16 +29,17 @@ class AppMenu extends Component {
     }
 
     handleLogIn(e) { // handleLogIn(e, {name}) {
-        console.log("do github login, state:", this.state);
-        const callBackUrl = process.env.PUBLIC_URL + '/loginsuccess.html';
+        //console.log("do github login, state:", this.state);
+        const callBackUrl = BASE_URL + '/loginsuccess.html';
         //https://developer.github.com/apps/building-oauth-apps/authorizing-oauth-apps/#web-application-flow
         //https://github.com/settings/applications/956071
         const loginParams = {
-            client_id: 'e456e08e1451867af4bb',
+            client_id: GITHUB_CLIENTID,
             redirect_uri: callBackUrl,
             state: randomstring.generate() // 32 of [0-9 a-z A-Z]  https://www.npmjs.com/package/randomstring
         };
         const loginUrl = 'https://github.com/login/oauth/authorize?' + querystring.encode(loginParams);
+        //console.log("login url: ", loginUrl);
         const msg = loginTab(loginUrl);
         msg.then(user => {
             console.log("received user", user);
