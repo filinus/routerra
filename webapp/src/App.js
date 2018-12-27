@@ -10,6 +10,10 @@ import {connect} from 'react-redux';
 console.log(process.env.NODE_ENV || "n/a", process.env.PUBLIC_URL || "n/a");
 
 class App extends Component {
+  static propTypes = {
+    isAuthenticated: propTypes.bool
+  };
+
   render() {
     const {isAuthenticated} = this.props;
     return (
@@ -26,9 +30,6 @@ class App extends Component {
   }
 }
 
-App.propTypes = {
-    isAuthenticated: propTypes.bool
-};
 
 const mapStateToProps = state => ({
     isAuthenticated: state.user.isAuthenticated

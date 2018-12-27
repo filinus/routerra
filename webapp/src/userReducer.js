@@ -1,6 +1,6 @@
 import * as actionTypes from './allActionTypes';
 
-export const STATE_KEY = 'currentUser';
+//export const STATE_KEY = 'currentUser';
 
 export const initialState = {
     isAuthenticated: false,

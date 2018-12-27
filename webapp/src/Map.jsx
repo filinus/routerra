@@ -23,6 +23,10 @@ const navStyle = {
 };
 
 class Map extends Component {
+    static propTypes = {
+        carsOnMap : propTypes.arrayOf(propTypes.object)
+    };
+
     constructor(props) {
         super(props);
 
@@ -71,8 +75,7 @@ class Map extends Component {
     }
 
     render() {
-        const {carsOnMap} = this.props;
-        console.log("rendering map");
+        //console.log("rendering map");
         return (
             <div id="mapContainer" style={mapContainerStyle}>
                 <ReactMapGL
@@ -84,7 +87,7 @@ class Map extends Component {
                     <div className="nav" style={navStyle}>
                         <NavigationControl  onViewportChange={(viewport) => this._updateViewport(viewport)} />
                     </div>
-                    {carsOnMap.map((car, index) =>
+                    {this.props.carsOnMap.map((car, index) =>
                         <Car {...car.lastLocation} {...car} key={car.id} index={index}/>
                     )}
                 </ReactMapGL>
@@ -108,10 +111,6 @@ class Map extends Component {
         this.setState({viewport});
     }
 }
-
-Map.propTypes = {
-    carsOnMap : propTypes.any//propTypes.arrayOf(propTypes.object)
-};
 
 const mapStateToProps = state => ({
     carsOnMap: state.device.devices
