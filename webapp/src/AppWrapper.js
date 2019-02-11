@@ -3,8 +3,8 @@ import './App';
 import App from "./App";
 import {createStore, combineReducers} from "redux";
 import { Provider } from 'react-redux'
-import userReducer from "./userReducer";
-import deviceReducer from "./deviceReducer";
+import userReducer from "./redux/userReducer";
+import deviceReducer from "./redux/deviceReducer";
 
 const store = createStore(combineReducers({user:userReducer, device: deviceReducer}));
 

@@ -4,7 +4,7 @@ import Car from './Car.jsx';
 import getData from "./getdata";
 import propTypes from "prop-types";
 import {bindActionCreators} from "redux";
-import * as deviceActions from "./deviceActions";
+import * as deviceActions from "./redux/deviceActions";
 import {connect} from 'react-redux';
 
 const TOKEN = process.env.REACT_APP_MAPBOX_TOKEN; //https://www.mapbox.com/help/how-access-tokens-work/
