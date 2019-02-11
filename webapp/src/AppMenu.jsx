@@ -56,8 +56,14 @@ class AppMenu extends Component {
             .then(data => {
                 if (!data) return;
                 console.log("received fleet list");
-                this.setState({response: data});
+                if (this._isMounted) {
+                    this.setState({response: data});
+                }
             })
+    }
+
+    componentWillUnmount () {
+        this._isMounted = false;
     }
 
     render() {

@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import ReactMapGL, {NavigationControl} from 'react-map-gl';
 import Car from './Car.jsx';
-import getData from "./getdata.js";
+import getData from "./getdata";
 import propTypes from "prop-types";
 import {bindActionCreators} from "redux";
 import * as deviceActions from "./deviceActions";
