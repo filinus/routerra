@@ -25,7 +25,7 @@ class AppMenu extends React.Component {
         response: kindaResponse,
     };
 
-    handleLogIn(e) { // handleLogIn(e, {name}) {
+    handleLogIn = e => { // handleLogIn(e, {name}) {
         //console.log("do github login, state:", this.state);
         const callBackUrl = BASE_URL + '/loginsuccess.html';
         //https://developer.github.com/apps/building-oauth-apps/authorizing-oauth-apps/#web-application-flow
@@ -42,11 +42,11 @@ class AppMenu extends React.Component {
             console.log("received user", user);
             this.props.userActions.injectUser(user);
         });
-    }
+    };
 
-    handleLogOut(e) { //handleLogOut(e, {name}) {
+    handleLogOut = e => { //handleLogOut(e, {name}) {
         this.props.userActions.logoutUser();
-    }
+    };
 
     componentDidMount() {
         getData("fleets")
@@ -72,16 +72,16 @@ class AppMenu extends React.Component {
                     <Typography variant="title" color="inherit" className={"icon big car VDivider"}>
                         Routerra Demo App
                     </Typography>
-                    <Select autoWidth={true} displayEmpty={true}>
+                    <Select autoWidth={true} displayEmpty={true} value={"fleet0"}>
                         {this.state.response.content.map((fleet, index) =>
                             <MenuItem key={"fleet" + index}>{fleet.fleetname}</MenuItem>
                         )}
                     </Select>
                     {!isAuthenticated && (
-                        <Button color="inherit" onClick={this.handleLogIn.bind(this)}>Login</Button>
+                        <Button color="inherit" onClick={this.handleLogIn}>Login</Button>
                     )}
                     {isAuthenticated && (
-                        <Button color="inherit" onClick={this.handleLogOut.bind(this)}>Logout {currentUser.username}</Button>
+                        <Button color="inherit" onClick={this.handleLogOut}>Logout {currentUser.username}</Button>
                     )}
                 </Toolbar>
             </AppBar>
