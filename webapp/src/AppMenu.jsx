@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React from 'react';
 import './App.css';
 import AppBar from '@material-ui/core/AppBar'
 import Toolbar from '@material-ui/core/Toolbar'
@@ -20,13 +20,10 @@ const kindaResponse = {content: []};
 const GITHUB_CLIENTID = process.env.REACT_APP_GITHUB_CLIENTID;
 const BASE_URL = process.env.PUBLIC_URL || process.env.REACT_APP_PUBLIC_URL;
 
-class AppMenu extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            response: kindaResponse,
-        };
-    }
+class AppMenu extends React.Component {
+    state = {
+        response: kindaResponse,
+    };
 
     handleLogIn(e) { // handleLogIn(e, {name}) {
         //console.log("do github login, state:", this.state);

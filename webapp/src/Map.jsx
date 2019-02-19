@@ -27,21 +27,18 @@ class Map extends Component {
         carsOnMap : propTypes.arrayOf(propTypes.object)
     };
 
-    constructor(props) {
-        super(props);
+    state = {
+        viewport: {
+            width: this.props.width || window.innerWidth,
+            height: this.props.height || window.innerHeight,
+            latitude: 37.7577,
+            longitude: -122.4376,
+            zoom: 9,
+            name: "Routerra",
 
-        this.state = {
-            viewport: {
-                width: this.props.width || window.innerWidth,
-                height: this.props.height || window.innerHeight,
-                latitude: 37.7577,
-                longitude: -122.4376,
-                zoom: 9,
-                name: "Routerra",
-
-            }
-        };
-    }
+        },
+        carsOnMap: []
+    };
 
     componentDidMount() {
         var intervalId = setInterval(this.timer.bind(this), 30000);

@@ -27,21 +27,17 @@ export default class Car extends Marker {
         devname: "unknown"
     };
 
-    /*
-    constructor(props) {
-        super(props);
-            this.state = {
-            latitude: props.latitude,
-            longitude: props.longitude,
-            course: props.course || 0, //North
-            color: props.color || 0, //black
-            devname: props.devname || "unknown"
-        };
-    }*/
+    state = {
+        latitude: props.latitude,
+        longitude: props.longitude,
+        course: props.course || 0, //North
+        color: props.color || 0, //black
+        devname: props.devname || "unknown"
+    };
 
     render () {
         //console.debug("render the car:", this.props);
-        const {course, color, devname} = this.props;
+        const {course, color, devname} = this.state;
 
         return(
             <Marker {...this.props} offsetLeft={-markerWidth/2} offsetTop={-markerHeight/2} >

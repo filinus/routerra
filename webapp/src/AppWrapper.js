@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import './App';
 import App from "./App";
 import {createStore, combineReducers} from "redux";
 import { Provider } from 'react-redux'
