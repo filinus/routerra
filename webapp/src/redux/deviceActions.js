@@ -1,6 +1,6 @@
 import * as ActionTypes from './allActionTypes';
 
-export function injectDeviceList(devices = []) {
+export const injectDeviceList = (devices = []) => {
     console.log("injecting devices", devices);
     return {
         type: ActionTypes.INJECT_DEVICES,
@@ -8,10 +8,10 @@ export function injectDeviceList(devices = []) {
             devices:devices
         }
     };
-}
+};
 
-export function resetDeviceList() {
+export const resetDeviceList  = () => {
     return {
         type: ActionTypes.RESET_DEVICES
     }
-}
+};

@@ -1,11 +1,10 @@
 import React, { Component } from 'react';
 import App from "./App";
-import {createStore, combineReducers} from "redux";
+import {createStore} from "redux";
 import { Provider } from 'react-redux'
-import userReducer from "./redux/userReducer";
-import deviceReducer from "./redux/deviceReducer";
+import combineReducers from "./redux/combine";
 
-const store = createStore(combineReducers({user:userReducer, device: deviceReducer}));
+const store = createStore(combineReducers);
 
 export default class AppWrapper extends Component {
   render() {

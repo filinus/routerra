@@ -31,7 +31,7 @@
       "device" : "804ff5f0-3071-4ee9-a060-60f9791a6002",
       "latitude" : 37.50428022096472,
       "longitude" : -122.2616814029433,
-      "course" : null,
+      "course" : 30,
       "tstamp" : "2018-10-03T17:56:37.000+0000",
       "handler" : { },
       "hibernateLazyInitializer" : { }

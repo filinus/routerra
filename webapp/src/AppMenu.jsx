@@ -9,7 +9,6 @@ import Button from '@material-ui/core/Button';
 import getData from "./getdata";
 import propTypes from 'prop-types';
 import {connect} from 'react-redux';
-import {bindActionCreators} from 'redux';
 import * as userActions from './redux/userActions';
 //import {STATE_KEY as USER_STATE_KEY, initialState} from './userReducer';
 import loginTab from './openWindow';
@@ -99,9 +98,9 @@ const mapStateToProps = state => ({
     currentUser: state.user.user
 });
 
-const mapDispatchToProps = dispatch => ({
-    userActions: bindActionCreators(userActions, dispatch)
-});
+const mapDispatchToProps = {
+    userActions: userActions
+};
 
 export default connect(mapStateToProps , mapDispatchToProps)(AppMenu);
 

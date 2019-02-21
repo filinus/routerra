@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React from 'react';
 import ReactMapGL, {NavigationControl} from 'react-map-gl';
 import Car from './Car.jsx';
 import getData from "./getdata";
@@ -22,7 +22,7 @@ const navStyle = {
     padding: '10px'
 };
 
-class Map extends Component {
+class Map extends React.Component {
     static propTypes = {
         carsOnMap : propTypes.arrayOf(propTypes.object)
     };
@@ -41,7 +41,7 @@ class Map extends Component {
     };
 
     componentDidMount() {
-        var intervalId = setInterval(this.timer.bind(this), 30000);
+        var intervalId = setInterval(this.timer, 30000);
         // store intervalId in the state so it can be accessed later:
         this.setState({intervalId: intervalId});
 
@@ -51,14 +51,14 @@ class Map extends Component {
         this._doAjax();
     }
 
-    _doAjax () {
+    _doAjax = () => {
         getData('devices')
             .then(data => {
                 if (!data) return;
                 //console.info("found cars in ajax:", data.content);
                 this.props.deviceActions.injectDeviceList(data.content);
             })
-    }
+    };
 
     componentWillUnmount() {
         // use intervalId from the state to clear the interval
@@ -67,9 +67,9 @@ class Map extends Component {
         window.removeEventListener('resize', this._resize);
     }
 
-    timer() {
+    timer = () => {
         this._doAjax();
-    }
+    };
 
     render() {
         //console.log("rendering map");
@@ -77,12 +77,12 @@ class Map extends Component {
             <div id="mapContainer" style={mapContainerStyle}>
                 <ReactMapGL
                     {...this.state.viewport}
-                    onViewportChange={(viewport) => this._updateViewport(viewport)}
+                    onViewportChange={this._updateViewport}
                     mapboxApiAccessToken={TOKEN}
                     mapStyle='mapbox://styles/mapbox/basic-v9'
                 >
                     <div className="nav" style={navStyle}>
-                        <NavigationControl  onViewportChange={(viewport) => this._updateViewport(viewport)} />
+                        <NavigationControl  onViewportChange={this._updateViewport} />
                     </div>
                     {this.props.carsOnMap.map((car, index) =>
                         <Car {...car.lastLocation} {...car} key={car.id} index={index}/>

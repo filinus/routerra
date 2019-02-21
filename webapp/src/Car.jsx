@@ -27,21 +27,21 @@ export default class Car extends Marker {
         devname: "unknown"
     };
 
-    state = {
+    /*state = {
         latitude: props.latitude,
         longitude: props.longitude,
         course: props.course || 0, //North
         color: props.color || 0, //black
         devname: props.devname || "unknown"
-    };
+    };*/
 
     render () {
         //console.debug("render the car:", this.props);
-        const {course, color, devname} = this.state;
+        const {course, color, devname} = this.props;
 
         return(
             <Marker {...this.props} offsetLeft={-markerWidth/2} offsetTop={-markerHeight/2} >
-                <Tooltip title={devname}>
+                <Tooltip title={devname} placement={"left-start"}>
                     <ReactSVG src={carTopIcon} alt="&#x1F698" svgStyle={{
                         ...markerStyle,
                         fill: color,
