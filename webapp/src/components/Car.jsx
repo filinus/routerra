@@ -1,5 +1,5 @@
 import {Marker} from 'react-map-gl';
-import carTopIcon from "./images/car_top.svg";
+import carTopIcon from "../images/car_top.svg";
 import React from "react";
 import ReactSVG from 'react-svg';
 import Tooltip from '@material-ui/core/Tooltip'

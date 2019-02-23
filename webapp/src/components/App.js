@@ -4,7 +4,7 @@ import {bindActionCreators} from 'redux'
 import Map from './Map.jsx';
 import AppMenu from "./AppMenu.jsx";
 import propTypes from "prop-types";
-import * as userActions from "./redux/userActions";
+import * as userActions from "../redux/userActions";
 import {connect} from 'react-redux';
 
 console.log(process.env.NODE_ENV || "n/a", process.env.PUBLIC_URL || "n/a");

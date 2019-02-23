@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import AppWrapper from '../AppWrapper';
+import AppWrapper from '../components/AppWrapper';
 
 it('renders without crashing', (itDone) => {
   const div = document.createElement('div');

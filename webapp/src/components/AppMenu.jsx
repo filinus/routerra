@@ -6,12 +6,11 @@ import Typography from '@material-ui/core/Typography'
 import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
 import Button from '@material-ui/core/Button';
-import getData from "./getdata";
+import getData from "../js/getdata";
 import propTypes from 'prop-types';
 import {connect} from 'react-redux';
-import * as userActions from './redux/userActions';
-//import {STATE_KEY as USER_STATE_KEY, initialState} from './userReducer';
-import loginTab from './openWindow';
+import * as userActions from '../redux/userActions';
+import loginTab from '../js/openWindow';
 import * as querystring from 'querystring'
 import * as randomstring from 'randomstring'
 
