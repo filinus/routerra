@@ -79,7 +79,7 @@ class Map extends React.Component {
                     {...this.state.viewport}
                     onViewportChange={this._updateViewport}
                     mapboxApiAccessToken={TOKEN}
-                    mapStyle='mapbox://styles/mapbox/basic-v9'
+                    mapStyle='mapbox://styles/mapbox/streets-v10'
                 >
                     <div className="nav" style={navStyle}>
                         <NavigationControl  onViewportChange={this._updateViewport} />
