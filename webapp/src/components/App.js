@@ -32,7 +32,7 @@ class App extends Component {
 
 
 const mapStateToProps = state => ({
-    isAuthenticated: true //state.user.isAuthenticated
+    isAuthenticated: state.user.isAuthenticated
 });
 
 const mapDispatchToProps = dispatch => ({
