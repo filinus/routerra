@@ -12,14 +12,7 @@
       </configuration>
     </facet>
     <facet type="Spring" name="Spring">
-      <configuration>
-        <fileset id="fileset" name="Beans" removed="false">
-          <dependency>spring_boot_us.filin.routerra.aggregator.AggregatorApplication</dependency>
-          <file>file://$MODULE_DIR$/src/main/resources/beans.xml</file>
-          <file>file://$MODULE_DIR$/src/main/java/us/filin/routerra/aggregator/AggregatorApplication.java</file>
-          <file>file://$MODULE_DIR$/src/main/resources/beans.xml</file>
-        </fileset>
-      </configuration>
+      <configuration />
     </facet>
   </component>
   <component name="NewModuleRootManager" LANGUAGE_LEVEL="JDK_1_8">
@@ -31,8 +24,9 @@
       <sourceFolder url="file://$MODULE_DIR$/src/test/java" isTestSource="true" />
       <excludeFolder url="file://$MODULE_DIR$/target" />
     </content>
-    <orderEntry type="jdk" jdkName="1.8" jdkType="JavaSDK" />
+    <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="module" module-name="database" />
     <orderEntry type="module" module-name="database" />
     <orderEntry type="library" scope="RUNTIME" name="Maven: com.h2database:h2:1.4.197" level="project" />
     <orderEntry type="library" name="Maven: org.springframework.data:spring-data-rest-webmvc:3.0.9.RELEASE" level="project" />
