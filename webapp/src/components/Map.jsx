@@ -1,26 +1,14 @@
-import React from 'react';
-import ReactMapGL, {NavigationControl} from 'react-map-gl';
-import Car from './Car.jsx';
-import getData from "../js/getdata";
-import propTypes from "prop-types";
+import * as React from 'react';
+import SmartMap from "./SmartMap";
+import Car from "./Car";
 import {bindActionCreators} from "redux";
 import * as deviceActions from "../redux/deviceActions";
+import getData from "../js/getdata";
+import propTypes from "prop-types";
 import {connect} from 'react-redux';
 
-const TOKEN = process.env.REACT_APP_MAPBOX_TOKEN; //https://www.mapbox.com/help/how-access-tokens-work/
-
-const mapContainerStyle = {
-    width: "100%",
-    height: "100%",
-    textAlign: "left"
-};
-
-const navStyle = {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    padding: '10px'
-};
+const colors = ['red','green','blue'];
+const getColor = index => colors[index % colors.length]
 
 class Map extends React.Component {
     static propTypes = {
@@ -28,15 +16,6 @@ class Map extends React.Component {
     };
 
     state = {
-        viewport: {
-            width: this.props.width || window.innerWidth,
-            height: this.props.height || window.innerHeight,
-            latitude: 37.7577,
-            longitude: -122.4376,
-            zoom: 9,
-            name: "Routerra",
-
-        },
         carsOnMap: []
     };
 
@@ -44,9 +23,6 @@ class Map extends React.Component {
         var intervalId = setInterval(this.timer, 30000);
         // store intervalId in the state so it can be accessed later:
         this.setState({intervalId: intervalId});
-
-        window.addEventListener('resize', this._resize);
-        this._resize();
 
         this._doAjax();
     }
@@ -64,7 +40,6 @@ class Map extends React.Component {
         // use intervalId from the state to clear the interval
         if (this.state.intervalId)
             clearInterval(this.state.intervalId);
-        window.removeEventListener('resize', this._resize);
     }
 
     timer = () => {
@@ -72,41 +47,14 @@ class Map extends React.Component {
     };
 
     render() {
-        //console.log("rendering map");
         return (
-            <div id="mapContainer" style={mapContainerStyle}>
-                <ReactMapGL
-                    {...this.state.viewport}
-                    onViewportChange={this._updateViewport}
-                    mapboxApiAccessToken={TOKEN}
-                    mapStyle='mapbox://styles/mapbox/streets-v10'
-                >
-                    <div className="nav" style={navStyle}>
-                        <NavigationControl  onViewportChange={this._updateViewport} />
-                    </div>
-                    {this.props.carsOnMap.map((car, index) =>
-                        <Car {...car.lastLocation} {...car} key={car.id} index={index}/>
-                    )}
-                </ReactMapGL>
-            </div>
+            <SmartMap {...this.props}>
+                {this.props.carsOnMap.map((car, index) => (
+                    <Car {...car.lastLocation} {...car} key={car.id} index={index} color={getColor(index)}/>
+                ))}
+            </SmartMap>
         );
-    }
-
-    _resize = () => {
-        //console.log("_resize:");
-        this.setState({
-            viewport: {
-                ...this.state.viewport,
-                width: this.props.width || window.innerWidth,
-                height: this.props.height || window.innerHeight
-            }
-        });
     };
-
-    _updateViewport = (viewport) => {
-        //console.log("_updateViewport:", viewport);
-        this.setState({viewport});
-    }
 }
 
 const mapStateToProps = state => ({
