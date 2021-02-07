@@ -13,6 +13,7 @@ import * as userActions from '../redux/userActions';
 import loginTab from '../js/openWindow';
 import * as querystring from 'querystring'
 import * as randomstring from 'randomstring'
+import {bindActionCreators} from "redux";
 
 const kindaResponse = {content: []};
 const GITHUB_CLIENTID = process.env.REACT_APP_GITHUB_CLIENTID;
@@ -23,7 +24,7 @@ class AppMenu extends React.Component {
         response: kindaResponse,
     };
 
-    handleLogIn = e => { // handleLogIn(e, {name}) {
+    handleLogIn = () => { // handleLogIn(e, {name}) {
         //console.log("do github login, state:", this.state);
         const callBackUrl = BASE_URL + '/loginsuccess.html';
         //https://developer.github.com/apps/building-oauth-apps/authorizing-oauth-apps/#web-application-flow
@@ -35,14 +36,15 @@ class AppMenu extends React.Component {
         };
         const loginUrl = 'https://github.com/login/oauth/authorize?' + querystring.encode(loginParams);
         //console.log("login url: ", loginUrl);
+        const that=this;
         const msg = loginTab(loginUrl);
         msg.then(user => {
             console.log("received user", user);
-            this.props.userActions.injectUser(user);
+            that.props.userActions.injectUser(user);
         });
     };
 
-    handleLogOut = e => { //handleLogOut(e, {name}) {
+    handleLogOut = () => { //handleLogOut(e, {name}) {
         this.props.userActions.logoutUser();
     };
 
@@ -67,7 +69,7 @@ class AppMenu extends React.Component {
         return (
             <AppBar position="static">
                 <Toolbar>
-                    <Typography variant="title" color="inherit" className={"icon big car VDivider"}>
+                    <Typography variant="h5" noWrap={true} color="inherit" className={"icon big car VDivider"}>
                         Routerra Demo App
                     </Typography>
                     <Select autoWidth={true} displayEmpty={true} value={"fleet0"}>
@@ -79,7 +81,7 @@ class AppMenu extends React.Component {
                         <Button color="inherit" onClick={this.handleLogIn}>Login</Button>
                     )}
                     {isAuthenticated && (
-                        <Button color="inherit" onClick={this.handleLogOut}>Logout {currentUser.username}</Button>
+                        <Button color="inherit" onClick={this.handleLogOut}>Logout {currentUser.user||'FIXME'}</Button>
                     )}
                 </Toolbar>
             </AppBar>
@@ -97,9 +99,9 @@ const mapStateToProps = state => ({
     currentUser: state.user.user
 });
 
-const mapDispatchToProps = {
-    userActions: userActions
-};
+const mapDispatchToProps = dispatch => ({
+    userActions: bindActionCreators(userActions, dispatch)
+});
 
 export default connect(mapStateToProps , mapDispatchToProps)(AppMenu);
 
