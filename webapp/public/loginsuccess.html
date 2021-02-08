@@ -9,7 +9,11 @@
 </body>
 <script>
     document.body.onload = function() {
-        var injectedUser = JSON.stringify({user:'mockuser'});
+        const injectedUser = JSON.stringify({
+            user:'mockuser1',
+            location: ""+window.location,
+            search: ""+window.location.search
+        });
         window.opener.postMessage(
             {payload: injectedUser, status: 'success'},
             window.opener.location

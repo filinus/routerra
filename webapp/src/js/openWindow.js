@@ -28,10 +28,12 @@ const loginTab = (myUrl) => {
     const messageEvent = eventMethod === 'attachEvent' ? 'onmessage' : 'message';
 
     // Listen to message from child window
+    const closeAuthWindow = () => {if (authWindow) try { authWindow.close(); } catch (e) {}}
+
     const authPromise = new Promise((resolve, reject) => {
         eventer(messageEvent, (msg) => {
             if (!~msg.origin.indexOf(`${window.location.protocol}//${window.location.host}`)) {
-                authWindow.close();
+                closeAuthWindow();
                 reject('Not allowed');
             }
 
@@ -41,10 +43,10 @@ const loginTab = (myUrl) => {
                 } catch(e) {
                     resolve(msg.data.payload);
                 } finally {
-                    authWindow.close();
+                    closeAuthWindow();
                 }
             } else {
-                authWindow.close();
+                closeAuthWindow();
                 reject('Unauthorised');
             }
         }, false);
