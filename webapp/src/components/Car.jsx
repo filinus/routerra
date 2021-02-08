@@ -27,10 +27,6 @@ export default class Car extends React.Component {
         devname: "unknown"
     };
 
-    constructor(props) {
-        super(props);
-    }
-
     render() {
         const {course, color, devname} = this.props;
         return(
